@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ 스마트 영어 자료 생성기 (Modern Chic 테마)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+
+    <!-- WORKBOOK MAKER 폰트 -->
+  <style>
+
+</style>
+  </style>
+  <style> 
+    @font-face {
+        font-family: 'Cafe24Nyangi-W-v1.0';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }  
+  </style>
+
+  <style>
+    @font-face {
+        font-family: 'HakgyoansimAllimjangTTF-B';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+  </style>
+  <style>
+    @font-face {
+        font-family: 'HSSanTokki20-Regular';
+        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+  </style>
+  <style>
+    @font-face {
+    font-family: 'Ownglyph_corncorn-Rg';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2412-1@1.0/Ownglyph_corncorn-Rg.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'SeoulAlrimTTF-Heavy';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/SeoulAlrimTTF-Heavy.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'MangoDdobak-B';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'SF_HambakSnow';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/SF_HambakSnow.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'MangoByeolbyeol';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoByeolbyeol.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'SacheonUju-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2506-1@1.0/SacheonUju-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'Freesentation-7Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'FlightSans-Title';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/FlightSans-Title.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'GumiRomanceTTF';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/GumiRomanceTTF.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    @font-face {
+    font-family: 'IAMAPLAYER';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/IAMAPLAYER.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+  <style>
+    .font-IAMAPLAYER {
+      font-family: 'IAMAPLAYER', sans-serif;
+    }
+    .font-GumiRomanceTTF {
+      font-family: 'GumiRomanceTTF', sans-serif;
+    }
+    .font-FlightSans {
+      font-family: 'FlightSans-Title', sans-serif;
+    }
+    .font-Gangwon {
+      font-family: 'GangwonEduPowerExtraBoldA', sans-serif;
+    }
+    .font-Freesentation-7Bold {
+      font-family: 'Freesentation-7Bold', sans-serif;
+    }
+    .font-Cafe24 {
+    font-family: 'Cafe24Nyangi-W-v1.0', sans-serif;
+    }
+
+    .font-HakgyoansimAllim {
+    font-family: 'HakgyoansimAllimjangTTF-B', sans-serif;
+    }
+
+    .font-SanTokki {
+    font-family: 'HSSanTokki20-Regular', sans-serif;
+    }
+
+    .font-Ownglyph {
+    font-family: 'Ownglyph_corncorn-Rg', sans-serif;
+    }
+
+    .font-SeoulAlrim {
+    font-family: 'SeoulAlrimTTF-Heavy', sans-serif;
+    }
+
+    .font-Mango {
+    font-family: 'MangoDdobak-B', sans-serif;
+    }
+    .font-HambakSnow {
+      font-family: 'SF_HambakSnow', sans-serif;
+    }
+    .font-MangoByeolbyeol {
+      font-family: 'MangoByeolbyeol', sans-serif;
+    }
+    .font-SacheonUju-Regular {
+      font-family: 'SacheonUju-Regular', sans-serif;
+    }
+
+    :root {
+      --primary-color: #14B8A6; /* teal-500 */
+      --primary-hover-color: #0D9488; /* teal-600 */
+      --bg-color: #F1F5F9; /* slate-100 */
+      --card-bg-color: #FFFFFF;
+      --border-color: #E2E8F0; /* slate-200 */
+      --text-primary: #1E293B; /* slate-800 */
+      --text-secondary: #475569; /* slate-600 */
+      --input-bg: #F8FAFC; /* slate-50 */
+    }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    .control-panel {
+      background-color: var(--card-bg-color);
+      padding: 2.5rem;
+      border-right: 1px solid var(--border-color);
+    }
+    .workspace {
+      padding: 2.5rem;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    .card {
+      background: var(--card-bg-color);
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    textarea, select {
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.8rem !important;
+      background: var(--input-bg);
+      color: var(--text-primary);
+    }
+    textarea::placeholder {
+      color: #94A3B8; /* slate-400 */
+    }
+    textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+      background: #fff;
+    }
+    .primary-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(20, 184, 166, 0.2);
+    }
+    .primary-btn:hover {
+      background-color: var(--primary-hover-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3);
+    }
+    .secondary-btn {
+      background-color: #F1F5F9; /* slate-100 */
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.452rem 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .secondary-btn:hover {
+      background-color: #E2E8F0; /* slate-200 */
+      border-color: #CBD5E1; /* slate-300 */
+    }
+    #copyMessage {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    #copyMessage.show {
+      bottom: 2rem;
+      opacity: 1;
+    }
+    #passageCountDisplay span {
+      font-weight: 500;
+    }
+    @media (max-width: 850px) {
+      .control-panel label {
+        font-size: 0.8rem; /* text-sm */
+        margin-bottom: 0.5rem; /* 줄이기 */
+      }
+
+      .control-panel select {
+        font-size: 0.75rem;  /* text-sm */
+      }
+
+      .main-grid {
+        grid-template-columns: 180px 1fr;
+      }
+      .control-panel {
+        padding: 1.7rem;
+      }
+      .control-panel h1 {
+        font-size: 1.25rem;
+      }
+      .primary-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.8rem;
+      }
+      .secondary-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+      }
+      select {
+        font-size: 0.875rem;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.4s ease forwards;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="main-grid">
+    <aside class="control-panel flex flex-col space-y-8">
+      <div>
+        <h1 class="font-SanTokki text-2xl font-bold text-teal-700 leading-tight"> 학습 자료 제작
+        <h1 class="font-IAMAPLAYER text-sm font-bold text-teal-700 leading-tight">  WORKBOOK MAKER
+      </div>
+
+
+      <div class="font-Freesentation-7Bold flex-1 space-y-8 font-">
+        <div>
+          <label class="block text-base font-medium text-slate-700 mb-3">생성 옵션</label>
+          <div class="space-y-4">
+            <div>
+              <label for="formatSelect" class="block text-sm font-medium text-slate-500 mb-1">넘버링 스타일</label>
+              <select id="formatSelect" class="w-full p-2 text-md rounded-md">
+                <option value="(1)">(1)</option>
+                <option value="1.">1.</option>
+                <option value="①">①</option>
+                <option value="(A)">(A)</option>
+              </select>
+            </div>
+            <div>
+              <label for="titleFormatSelect" class="block text-sm font-medium text-slate-500 mb-1">제목 스타일</label>
+              <select id="titleFormatSelect" class="w-full p-2 rounded-md">
+                <option value=" ">제목</option>
+                <option value="[ ]">[제목]</option>
+                <option value="( )">(제목)</option>
+                <option value="< >">&lt;제목&gt;</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+            <label class="block text-base font-medium text-slate-700 mb-3">실행</label>
+            <div class="space-y-3">
+                <button onclick="splitAll()" class="primary-btn w-full">문장 나누기</button>
+                <button onclick="generateAllOrderQuestions()" class="primary-btn w-full">순서 배열</button>
+                <button onclick="toggleShowExplanations(); generateAllWordShuffles();" class="primary-btn w-full">어순 배열</button>
+                <button onclick="openGuideModal()" class="secondary-btn w-full">사용 설명서 보기</button>
+                <button onclick="openGuideModal()" class="secondary-btn w-full">어?</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="text-center text-sm text-slate-400">
+        &copy; 2024 Smart Generator.
+      </div>
+    </aside>
+
+    <main class="workspace space-y-6 p-5">
+    <div class="flex flex-col lg:flex-row gap-5">
+      <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
+        <!-- 상단 고정 제목 -->
+        <div class="p-7 border-b">
+          <h2 class="text-lg font-bold text-slate-800">지문 입력</h2>
+        </div>
+
+        <!-- 스크롤 가능한 지문 입력 영역 -->
+        <div id="passagesContainer" class="flex-1 overflow-y-auto px-5 py-5 space-y-5">
+          <div class="passage-group space-y-3">
+              <svg width="12" height="10">
+                <rect x="0" y="0" width="10" height="10" rx="6" ry="6" fill="#14B8A6" />
+              </svg>
+            <div class="flex items-center gap-2">
+              <!-- 청록색 가로 직사각형 아이콘 -->
+              <!-- 제목 입력란 -->
+              <textarea placeholder="제목 또는 해설을 입력하세요" rows="1"
+                class="w-full p-3 text-sm min-h-[40px] overflow-hidden resize-none auto-expand"></textarea>
+            </div>
+
+            <!-- 본문 입력란 -->
+            <textarea placeholder="이곳에 영어 지문을 입력하세요. 문장 끝에 마침표, 물음표, 느낌표를 꼭 붙여주세요."
+              rows="6" class="w-full resize-y p-3 text-sm"></textarea>
+          </div>
+        </div>
+
+        <!-- 하단 고정 버튼 -->
+        <div class="p-4 border-t flex justify-end items-center gap-3 flex-wrap shrink-0">
+          <div class="flex items-center gap-3">
+          <div id="passageCountDisplay" class="flex items-center text-sm text-slate-500 mr-auto">
+            <span>지문 수 <span id="passageCount" class="font-bold font-HakgyoansimAllim text-teal-500">1</span>개</span>
+          </div>
+
+          <button onclick="addPassage()" class="secondary-btn text-sm flex items-center justify-center gap-1.5">
+            <!-- 추가 아이콘 -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+            </svg>
+            추가
+          </button>
+
+          <button onclick="removePassage()" class="secondary-btn text-sm flex items-center justify-center gap-1.5">
+            <!-- 삭제 아이콘 -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z" clip-rule="evenodd" />
+            </svg>
+            삭제
+          </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
+      <div class="p-6 border-b shrink-0 flex justify-between items-center">
+        <!-- 왼쪽: 결과 제목 -->
+        <h2 class="text-lg font-bold text-slate-800">결과</h2>
+
+        <!-- 오른쪽: 해설 체크박스 + 복사 버튼 -->
+        <div class="flex items-center gap-4">
+          <div id="showExplanationsWrapper" style="display: none;">
+            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+              <input type="checkbox" id="showExplanations" class="accent-teal-500 rounded" checked>
+              해석(제목) 함께 보기
+            </label>
+          </div>
+
+          <button onclick="copyResult()" class="secondary-btn text-sm flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M7 3.25H5.25a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9.5A.75.75 0 0016.5 9V5.25a2 2 0 00-2-2H13.25a.75.75 0 000 1.5H15a.5.5 0 01.5.5v10a.5.5 0 01-.5.5H5.25a.5.5 0 01-.5-.5V5.25a.5.5 0 01.5-.5H7a.75.75 0 000-1.5z" />
+              <path d="M9.25 2.25a.75.75 0 01.75-.75h4a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0V3.56l-3.22 3.22a.75.75 0 11-1.06-1.06l3.22-3.22H10a.75.75 0 01-.75-.75z" />
+            </svg>
+            결과 복사
+          </button>
+        </div>
+      </div>
+        <div class="flex-1 overflow-y-auto p-4">
+          <div class="result-controls mb-3 flex justify-end">
+            <!-- ✅ 기본 숨김 -->
+          <div id="outputArea" class="bg-slate-50 rounded-lg text-sm leading-relaxed p-4 min-h-full">
+          </div>
+        </div>
+        </div>
+    </main>
+    </div>
+
+  <div id="copyMessage" class="opacity-0 bg-slate-800 text-white text-sm font-medium py-2 px-5 rounded-full shadow-lg">
+    ✓ 클립보드에 복사되었습니다!
+  </div>
+
+  <script>
+    function addPassage() {
+      const container = document.getElementById("passagesContainer");
+      const newPassageGroup = document.createElement("div");
+      newPassageGroup.className = "passage-group space-y-3 animate-fade-in";
+      newPassageGroup.innerHTML = `
+            <svg width="12" height="10">
+                <rect x="0" y="0" width="10" height="10" rx="6" ry="6" fill="#14B8A6" />
+              </svg>
+            <div class="flex items-center gap-2">
+              <!-- 제목 입력란 -->
+              <textarea placeholder="제목 또는 해설을 입력하세요" rows="1"
+                class="w-full p-3 text-sm min-h-[40px] overflow-hidden resize-none auto-expand"></textarea>
+            </div>
+
+            <!-- 본문 입력란 -->
+            <textarea placeholder="이곳에 영어 지문을 입력하세요. 문장 끝에 마침표, 물음표, 느낌표를 꼭 붙여주세요."
+              rows="6" class="w-full resize-y p-3 text-sm"></textarea>
+          </div>
+      `;
+      container.appendChild(newPassageGroup);
+      newPassageGroup.scrollIntoView({ behavior: 'smooth' });
+
+      updatePassageCount();
+    }
+
+    function removePassage() {
+      const container = document.getElementById("passagesContainer");
+      const passageGroups = container.getElementsByClassName("passage-group");
+      if (passageGroups.length > 1) {
+        const lastGroup = passageGroups[passageGroups.length - 1];
+        container.removeChild(lastGroup);
+        updatePassageCount();
+      }
+    }
+
+    function getPassages() {
+      return Array.from(document.getElementsByClassName("passage-group")).map(group => {
+        const textareas = group.querySelectorAll("textarea");
+        return {
+          title: textareas[0]?.value.trim() || "제목 없음",
+          body: textareas[1]?.value.trim() || ""
+        };
+      }).filter(passage => passage.body);
+    }
+
+    function updatePassageCount() {
+      const count = document.querySelectorAll(".passage-group").length;
+      document.getElementById("passageCount").innerText = count;
+    }
+
+    function extractSentences(text) {
+      return text.match(/[^.?!]+[.?!]+/g) || [];
+    }
+
+    function getNumberingPrefix(format, num) {
+      const circles = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
+      switch(format) {
+        case "(1)": return `(${num}) `;
+        case "1.": return `${num}. `;
+        case "①": return (num <= 20 ? circles[num-1] : `(${num})`) + ' ';
+        case "(A)": return `(${(String.fromCharCode(64 + num))}) `;
+        default: return `(${num}) `;
+      }
+    }
+
+    function getFormattedTitle(title, format) {
+        if (title === '제목 없음') return '';
+        const formats = { " ": title, "[ ]": `[${title}]`, "( )": `(${title})`, "< >": `<${title}>` };
+        return formats[format] || title;
+    }
+
+    function splitAll() {
+      hideExplanationCheckbox(); // ❌ 해설 체크박스 숨김
+
+      const format = document.getElementById("formatSelect").value;
+      const titleFormat = document.getElementById("titleFormatSelect").value;
+      const passages = getPassages();
+      let result = passages.map(({ title, body }) => {
+        const formattedTitle = getFormattedTitle(title, titleFormat);
+        const sentences = extractSentences(body);
+        const numbered = sentences.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s.trim()}`);
+        return (formattedTitle ? `${formattedTitle}\n\n` : '') + numbered.join("\n\n\n");
+      }).join("\n\n---\n\n");
+      document.getElementById("outputArea").innerText = result.trim();
+    }
+
+    function generateAllOrderQuestions() {
+      hideExplanationCheckbox(); // ❌ 해설 체크박스 숨김
+
+      const format = document.getElementById("formatSelect").value;
+      const titleFormat = document.getElementById("titleFormatSelect").value;
+      const passages = getPassages();
+      let result = passages.map(({ title, body }) => {
+        const formattedTitle = getFormattedTitle(title, titleFormat);
+        const sentences = extractSentences(body).map(s => s.trim());
+        if (sentences.length < 2) return `${formattedTitle}\n두 문장 이상 입력해야 합니다.`;
+
+        const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+        const question = shuffled.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s}`).join("\n\n");
+        const answerOrder = sentences.map(original => getNumberingPrefix(format, shuffled.indexOf(original) + 1).trim());
+        return `${formattedTitle}\n\n${question}\n\n정답: ${answerOrder.join(" → ")}`;
+      }).join("\n\n---\n\n");
+      document.getElementById("outputArea").innerText = result.trim();
+    }
+
+    function generateAllWordShuffles() {
+      showExplanationCheckbox(); // ✅ 해설 체크박스 보이기
+
+      const passages = getPassages();
+      let result = "";
+      let questionCount = 1;
+
+      const showExplanations = document.getElementById("showExplanations").checked;
+      const numberingFormat = document.getElementById("formatSelect").value;
+
+      passages.forEach(({ title, body }) => {
+        const explanations = extractSentences(title);
+        const sentences = extractSentences(body);
+        
+      if (explanations.length !== sentences.length) {
+        result += `❗ 해설문과 영어 문장의 개수가 일치하지 않습니다❗ \n\n`;
+        return;
+      }
+        const processedSentences = sentences.map((sentence, idx) => {
+          const explanation = explanations[idx] ? explanations[idx].trim() : sentence.trim();
+          const words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
+          const shuffled = [...words].sort(() => Math.random() - 0.5);
+          const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+
+          if (showExplanations) {
+            return `${numbering}${explanation}\n[ ${shuffled.join(" / ")} ]\n\n→\n\n`;
+          } else {
+            return `${numbering}[ ${shuffled.join(" / ")} ]\n\n→\n\n`;
+          }
+        }).join("\n");
+
+        result += processedSentences + '\n';
+      });
+
+      document.getElementById("outputArea").innerText = result.trim();
+    }
+
+    function copyResult() {
+      const output = document.getElementById("outputArea").innerText;
+      if (output) {
+        navigator.clipboard.writeText(output).then(() => {
+          const message = document.getElementById("copyMessage");
+          message.classList.add("show");
+          setTimeout(() => message.classList.remove("show"), 2000);
+        });
+      }
+    }
+    document.addEventListener('input', function (event) {
+      if (event.target.classList.contains('auto-expand')) {
+        event.target.style.height = 'auto';
+        event.target.style.height = (event.target.scrollHeight) + 'px';
+      }
+    });
+    document.addEventListener("DOMContentLoaded", updatePassageCount);
+    function openGuideModal() {
+      document.getElementById('guideModal').classList.remove('hidden');
+    }
+
+    function toggleShowExplanations() {
+      const wrapper = document.getElementById("showExplanationsWrapper");
+      if (wrapper.style.display === "none" || wrapper.style.display === "") {
+        wrapper.style.display = "block";
+      } else {
+        wrapper.style.display = "none";
+      }
+    }
+
+    // 체크박스 상태 변경 시 바로 결과 갱신 (선택사항)
+    document.getElementById("showExplanations").addEventListener("change", () => {
+      generateAllWordShuffles();
+    });
+
+    // ✅ 체크박스 보이기
+    function showExplanationCheckbox() {
+      document.getElementById("showExplanationsWrapper").style.display = "block";
+    }
+
+    // ❌ 체크박스 숨기기
+    function hideExplanationCheckbox() {
+      document.getElementById("showExplanationsWrapper").style.display = "none";
+    }
+
+    function closeGuideModal() {
+      document.getElementById('guideModal').classList.add('hidden');
+    }
+  </script>
+  <!-- 사용 설명서 모달 -->
+  <div id="guideModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl max-w-2xl w-full p-6 relative shadow-xl">
+      <h3 class="text-lg font-bold mb-4 text-slate-800">사용 설명서</h3>
+      <div class="text-sm leading-relaxed text-slate-600 space-y-3 max-h-[90vh] overflow-y-auto">
+        <p>1. <span class="font-bold">문장 나누기</span>는 글을 문장 단위로 자동 분리해 줍니다.</p>
+        <p><strong> 💡 영어 문장 / 한글 해석</strong> 모두 가능</li>
+        <p>2. <span class="font-bold">순서 배열</span>은 문장 순서를 섞고 정답을 제공합니다.</p>
+        <p>3. <span class="font-bold">어순 배열</span>은 단어 순서를 섞고 정답을 제공합니다.</p>
+        <p>4. <span class="font-bold">넘버링 모양</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">(1)   1.   ①   (A) </p>
+        <p>5. <span class="font-bold">제목의 모양</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">제목   [제목]   (제목)   제목</p>
+        <p>6. <span class="font-bold">각 문장은 반드시</span> <strong class="text-teal-700">마침표(.) 물음표(?) 느낌표(!)</strong>로 끝나야 합니다.</p>
+        <p>7. <span class="font-bold">제목 출력이 필요 없다면,</span> 제목 입력 X</p>
+        <p>8. <span class="font-bold">삭제해야 할 지문이 중간에 있다면,</span> 내용 삭제</p>
+      </div>
+      <button onclick="closeGuideModal()" class="absolute top-2 right-3 text-slate-500 hover:text-slate-800 text-xl font-bold">&times;</button>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+
