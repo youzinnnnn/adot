@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ 스마트 영어 자료 생성기 (Modern Chic 테마)</title>
+  <title> 자료 제작 매크로 </title>
+  <link rel="icon" href="C:\Users\1153g\Desktop\workbookmaker">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,175 +15,46 @@
     html {
       scroll-behavior: smooth;
     }
+    @font-face {
+      font-family: 'Cafe24Nyangi-W-v1.0';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'HakgyoansimAllimjangTTF-B';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'HSSanTokki20-Regular';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Freesentation-7Bold';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'IAMAPLAYER';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/IAMAPLAYER.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
   </style>
 
-    <!-- WORKBOOK MAKER 폰트 -->
   <style>
-
-</style>
-  </style>
-  <style> 
-    @font-face {
-        font-family: 'Cafe24Nyangi-W-v1.0';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    }  
+    .font-IAMAPLAYER { font-family: 'IAMAPLAYER', sans-serif; }
+    .font-Freesentation-7Bold { font-family: 'Freesentation-7Bold', sans-serif; }
+    .font-HakgyoansimAllim { font-family: 'HakgyoansimAllimjangTTF-B', sans-serif; }
+    .font-SanTokki { font-family: 'HSSanTokki20-Regular', sans-serif; }
   </style>
 
   <style>
-    @font-face {
-        font-family: 'HakgyoansimAllimjangTTF-B';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
-        font-weight: 700;
-        font-style: normal;
-    }
-  </style>
-  <style>
-    @font-face {
-        font-family: 'HSSanTokki20-Regular';
-        src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-    }
-  </style>
-  <style>
-    @font-face {
-    font-family: 'Ownglyph_corncorn-Rg';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2412-1@1.0/Ownglyph_corncorn-Rg.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'SeoulAlrimTTF-Heavy';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2505-1@1.0/SeoulAlrimTTF-Heavy.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'MangoDdobak-B';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'SF_HambakSnow';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/SF_HambakSnow.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'MangoByeolbyeol';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoByeolbyeol.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'SacheonUju-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2506-1@1.0/SacheonUju-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'Freesentation-7Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'GangwonEduPowerExtraBoldA';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'FlightSans-Title';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/FlightSans-Title.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'GumiRomanceTTF';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/GumiRomanceTTF.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    @font-face {
-    font-family: 'IAMAPLAYER';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/IAMAPLAYER.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-  </style>
-  <style>
-    .font-IAMAPLAYER {
-      font-family: 'IAMAPLAYER', sans-serif;
-    }
-    .font-GumiRomanceTTF {
-      font-family: 'GumiRomanceTTF', sans-serif;
-    }
-    .font-FlightSans {
-      font-family: 'FlightSans-Title', sans-serif;
-    }
-    .font-Gangwon {
-      font-family: 'GangwonEduPowerExtraBoldA', sans-serif;
-    }
-    .font-Freesentation-7Bold {
-      font-family: 'Freesentation-7Bold', sans-serif;
-    }
-    .font-Cafe24 {
-    font-family: 'Cafe24Nyangi-W-v1.0', sans-serif;
-    }
-
-    .font-HakgyoansimAllim {
-    font-family: 'HakgyoansimAllimjangTTF-B', sans-serif;
-    }
-
-    .font-SanTokki {
-    font-family: 'HSSanTokki20-Regular', sans-serif;
-    }
-
-    .font-Ownglyph {
-    font-family: 'Ownglyph_corncorn-Rg', sans-serif;
-    }
-
-    .font-SeoulAlrim {
-    font-family: 'SeoulAlrimTTF-Heavy', sans-serif;
-    }
-
-    .font-Mango {
-    font-family: 'MangoDdobak-B', sans-serif;
-    }
-    .font-HambakSnow {
-      font-family: 'SF_HambakSnow', sans-serif;
-    }
-    .font-MangoByeolbyeol {
-      font-family: 'MangoByeolbyeol', sans-serif;
-    }
-    .font-SacheonUju-Regular {
-      font-family: 'SacheonUju-Regular', sans-serif;
-    }
-
     :root {
       --primary-color: #14B8A6; /* teal-500 */
       --primary-hover-color: #0D9488; /* teal-600 */
@@ -281,12 +153,12 @@
     }
     @media (max-width: 850px) {
       .control-panel label {
-        font-size: 0.8rem; /* text-sm */
-        margin-bottom: 0.5rem; /* 줄이기 */
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
       }
 
       .control-panel select {
-        font-size: 0.75rem;  /* text-sm */
+        font-size: 0.75rem;
       }
 
       .main-grid {
@@ -328,7 +200,6 @@
         <h1 class="font-IAMAPLAYER text-sm font-bold text-teal-700 leading-tight">  WORKBOOK MAKER
       </div>
 
-
       <div class="font-Freesentation-7Bold flex-1 space-y-8 font-">
         <div>
           <label class="block text-base font-medium text-slate-700 mb-3">생성 옵션</label>
@@ -361,37 +232,35 @@
                 <button onclick="generateAllOrderQuestions()" class="primary-btn w-full">순서 배열</button>
                 <button onclick="toggleShowExplanations(); generateAllWordShuffles();" class="primary-btn w-full">어순 배열</button>
                 <button onclick="openGuideModal()" class="secondary-btn w-full">사용 설명서 보기</button>
-                <button onclick="openGuideModal()" class="secondary-btn w-full">어?</button>
+                <button onclick="openGuideModal2()" class="secondary-btn w-full">샘플 데이터</button>
             </div>
         </div>
       </div>
-
-      <div class="text-center text-sm text-slate-400">
-        &copy; 2024 Smart Generator.
+      <div class="text-center text-xs text-slate-400">
+        &copy; youzinnnnn workboookmaker
+        update: 2025.07.13
       </div>
     </aside>
 
     <main class="workspace space-y-6 p-5">
     <div class="flex flex-col lg:flex-row gap-5">
       <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
-        <!-- 상단 고정 제목 -->
+        <!-- 입력 -->
         <div class="p-7 border-b">
           <h2 class="text-lg font-bold text-slate-800">지문 입력</h2>
         </div>
 
-        <!-- 스크롤 가능한 지문 입력 영역 -->
+        <!-- 입력란 -->
         <div id="passagesContainer" class="flex-1 overflow-y-auto px-5 py-5 space-y-5">
           <div class="passage-group space-y-3">
               <svg width="12" height="10">
                 <rect x="0" y="0" width="10" height="10" rx="6" ry="6" fill="#14B8A6" />
               </svg>
             <div class="flex items-center gap-2">
-              <!-- 청록색 가로 직사각형 아이콘 -->
               <!-- 제목 입력란 -->
               <textarea placeholder="제목 또는 해설을 입력하세요" rows="1"
                 class="w-full p-3 text-sm min-h-[40px] overflow-hidden resize-none auto-expand"></textarea>
             </div>
-
             <!-- 본문 입력란 -->
             <textarea placeholder="이곳에 영어 지문을 입력하세요. 문장 끝에 마침표, 물음표, 느낌표를 꼭 붙여주세요."
               rows="6" class="w-full resize-y p-3 text-sm"></textarea>
@@ -426,10 +295,10 @@
 
       <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
       <div class="p-6 border-b shrink-0 flex justify-between items-center">
-        <!-- 왼쪽: 결과 제목 -->
+        <!--  결과 -->
         <h2 class="text-lg font-bold text-slate-800">결과</h2>
 
-        <!-- 오른쪽: 해설 체크박스 + 복사 버튼 -->
+        <!-- 해설 체크박스 + 복사 버튼 -->
         <div class="flex items-center gap-4">
           <div id="showExplanationsWrapper" style="display: none;">
             <label class="inline-flex items-center gap-2 text-sm text-slate-700">
@@ -448,11 +317,12 @@
         </div>
       </div>
         <div class="flex-1 overflow-y-auto p-4">
+    
           <div class="result-controls mb-3 flex justify-end">
-            <!-- ✅ 기본 숨김 -->
-          <div id="outputArea" class="bg-slate-50 rounded-lg text-sm leading-relaxed p-4 min-h-full">
-          </div>
+            <!-- 기본 숨김 -->
         </div>
+        <div id="outputArea" class="bg-slate-50 rounded-lg text-sm leading-relaxed p-2 min-h-[70vh]">
+          </div>
         </div>
     </main>
     </div>
@@ -533,8 +403,9 @@
         return formats[format] || title;
     }
 
+    // 문장 나누기
     function splitAll() {
-      hideExplanationCheckbox(); // ❌ 해설 체크박스 숨김
+      hideExplanationCheckbox(); 
 
       const format = document.getElementById("formatSelect").value;
       const titleFormat = document.getElementById("titleFormatSelect").value;
@@ -548,8 +419,9 @@
       document.getElementById("outputArea").innerText = result.trim();
     }
 
+    // 순서 배열
     function generateAllOrderQuestions() {
-      hideExplanationCheckbox(); // ❌ 해설 체크박스 숨김
+      hideExplanationCheckbox();
 
       const format = document.getElementById("formatSelect").value;
       const titleFormat = document.getElementById("titleFormatSelect").value;
@@ -567,8 +439,9 @@
       document.getElementById("outputArea").innerText = result.trim();
     }
 
+    // 어순배열
     function generateAllWordShuffles() {
-      showExplanationCheckbox(); // ✅ 해설 체크박스 보이기
+      showExplanationCheckbox(); 
 
       const passages = getPassages();
       let result = "";
@@ -588,8 +461,14 @@
         const processedSentences = sentences.map((sentence, idx) => {
           const explanation = explanations[idx] ? explanations[idx].trim() : sentence.trim();
           const words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
+
+          if (words.length > 0) {
+            words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1);
+          }
+
           const shuffled = [...words].sort(() => Math.random() - 0.5);
           const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+
 
           if (showExplanations) {
             return `${numbering}${explanation}\n[ ${shuffled.join(" / ")} ]\n\n→\n\n`;
@@ -621,8 +500,12 @@
       }
     });
     document.addEventListener("DOMContentLoaded", updatePassageCount);
+
     function openGuideModal() {
       document.getElementById('guideModal').classList.remove('hidden');
+    }
+    function openGuideModal2() {
+      document.getElementById('guideModal2').classList.remove('hidden');
     }
 
     function toggleShowExplanations() {
@@ -634,23 +517,24 @@
       }
     }
 
-    // 체크박스 상태 변경 시 바로 결과 갱신 (선택사항)
+    // 체크박스 상태 변경 시 바로 결과 갱신
     document.getElementById("showExplanations").addEventListener("change", () => {
       generateAllWordShuffles();
     });
 
-    // ✅ 체크박스 보이기
+    // 체크박스 보이기
     function showExplanationCheckbox() {
       document.getElementById("showExplanationsWrapper").style.display = "block";
     }
 
-    // ❌ 체크박스 숨기기
+    // 체크박스 숨기기
     function hideExplanationCheckbox() {
       document.getElementById("showExplanationsWrapper").style.display = "none";
     }
 
     function closeGuideModal() {
       document.getElementById('guideModal').classList.add('hidden');
+      document.getElementById('guideModal2').classList.add('hidden');
     }
   </script>
   <!-- 사용 설명서 모달 -->
@@ -658,19 +542,102 @@
     <div class="bg-white rounded-xl max-w-2xl w-full p-6 relative shadow-xl">
       <h3 class="text-lg font-bold mb-4 text-slate-800">사용 설명서</h3>
       <div class="text-sm leading-relaxed text-slate-600 space-y-3 max-h-[90vh] overflow-y-auto">
-        <p>1. <span class="font-bold">문장 나누기</span>는 글을 문장 단위로 자동 분리해 줍니다.</p>
-        <p><strong> 💡 영어 문장 / 한글 해석</strong> 모두 가능</li>
+        <p><strong> 💡 영어 / 한글</strong> 모든 글에 활용 가능 (영작, 해석 연습 제작)</li>
+        <!-- <p>1. <span class="font-bold">문장 나누기</span>는 글을 문장 단위로 자동 분리해 줍니다.</p>
         <p>2. <span class="font-bold">순서 배열</span>은 문장 순서를 섞고 정답을 제공합니다.</p>
-        <p>3. <span class="font-bold">어순 배열</span>은 단어 순서를 섞고 정답을 제공합니다.</p>
-        <p>4. <span class="font-bold">넘버링 모양</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">(1)   1.   ①   (A) </p>
-        <p>5. <span class="font-bold">제목의 모양</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">제목   [제목]   (제목)   제목</p>
-        <p>6. <span class="font-bold">각 문장은 반드시</span> <strong class="text-teal-700">마침표(.) 물음표(?) 느낌표(!)</strong>로 끝나야 합니다.</p>
-        <p>7. <span class="font-bold">제목 출력이 필요 없다면,</span> 제목 입력 X</p>
-        <p>8. <span class="font-bold">삭제해야 할 지문이 중간에 있다면,</span> 내용 삭제</p>
+        <p>3. <span class="font-bold">어순 배열</span>은 단어 순서를 섞고 정답을 제공합니다.</p> -->
+        <p>1. <span class="font-bold">넘버링 스타일</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">(1)   1.   ①   (A) </p>
+        <p>2. <span class="font-bold">제목 스타일</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">제목   [제목]   (제목)   제목</p>
+        <p>3. <span class="font-bold">각 문장은 반드시</span> <strong class="text-teal-700">마침표(.) 물음표(?) 느낌표(!)</strong>로 끝나야 합니다.</p>
+        <p>4. <span class="font-bold">제목 출력이 필요 없다면,</span> 제목 입력 X</p>
+        <p>5. <span class="font-bold">삭제해야 할 지문이 중간에 있다면,</span> 내용 지우기</p>
       </div>
       <button onclick="closeGuideModal()" class="absolute top-2 right-3 text-slate-500 hover:text-slate-800 text-xl font-bold">&times;</button>
     </div>
   </div>
+
+  <!-- 샘플 데이터 모달 -->
+<div id="guideModal2" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white rounded-xl max-w-3xl w-full p-6 relative shadow-xl max-h-[80vh] overflow-y-auto">
+    <h3 class="text-lg font-bold mb-4 text-slate-800">샘플 데이터 및 예시</h3>
+
+    <div class="text-sm leading-relaxed text-slate-600 space-y-6">
+
+      <!-- 제목/지문/해설 입력 예시 -->
+      <div>
+        <p class="font-bold text-slate-700">✏️ 샘플 데이터</p>
+        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
+제목 예시:
+3강 4번
+
+지문 예시:
+Nathan boarded the train on Saturday evening. As he made his way to his seat, he found someone already sitting there. Confused, he checked his ticket and realized his mistake. It was for Sunday, not Saturday! A flush of panic spread across his face. He quickly approached a train attendant and explained the situation. 
+
+해설 예시:
+Nathan은 토요일 저녁에 기차에 탑승했다. 자신의 좌석으로 가던 중, 그는 이미 누군가가 그 자리에 앉아 있는 것을 발견했다. 혼란스러워하며 그는 자신의 표를 확인했고, 자신의 실수를 깨달았다. 토요일이 아니라 일요일 표였던 것이다! 당황한 기색이 그의 얼굴에 번졌다. 그는 재빨리 기차 승무원에게 다가가 상황을 설명했다.</div>
+
+      <!-- 문장 나누기 결과 -->
+      <div>
+        <p class="font-bold text-slate-700">🍀 문장 나누기 예시</p>
+        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
+(1) Nathan boarded the train on Saturday evening.
+
+(2) As he made his way to his seat, he found someone already sitting there.
+
+(3) Confused, he checked his ticket and realized his mistake.
+.
+.
+</pre>
+      </div>
+
+      <!-- 순서 배열 결과 -->
+      <div>
+        <p class="font-bold text-slate-700">🍀 순서 배열 예시</p>
+        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
+(A) Confused, he checked his ticket and realized his mistake.
+
+(B) Nathan boarded the train on Saturday evening.
+
+(C) As he made his way to his seat, he found someone already sitting there.
+.
+.
+
+정답: (B) → (C) → (A) . .
+</pre>
+      </div>
+
+      <!-- 어순 배열 결과 -->
+      <div>
+        <p class="font-bold text-slate-700">🍀 어순 배열 예시 (제목란에 해설 입력 시)</p>
+        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
+(A) Nathan은 토요일 저녁에 기차에 탑승했다.
+[ Saturday / boarded / the / train / nathan / on / evening ]
+
+→
+
+(B) 자신의 좌석으로 가던 중, 그는 이미 누군가가 그 자리에 앉아 있는 것을 발견했다.
+[ as / found / someone / he / sitting / made / his / way / to / his / he / already / seat, / there ]
+
+→
+
+(C) 혼란스러워하며 그는 자신의 표를 확인했고, 자신의 실수를 깨달았다.
+[ ticket / he / and / checked / confused, / his / realized / mistake / his ]
+
+→
+.
+.
+</pre>
+      </div>
+
+    </div>
+
+    <button onclick="closeGuideModal()" class="absolute top-2 right-3 text-slate-500 hover:text-slate-800 text-xl font-bold">&times;</button>
+  </div>
+</div>
+
+  </div>
+
+</div>
 
 </body>
 </html>
