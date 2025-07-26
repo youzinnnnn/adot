@@ -119,35 +119,40 @@
                                         <p class="font-mono text-xs text-gray-500 mb-1">[제목 입력란]</p>
                                         <pre class="bg-white p-2 rounded text-sm">2과 5번</pre>
                                         <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">The quick brown fox jumps over the lazy dog. It was a beautiful day.</pre>
+                                        <pre class="bg-white p-2 rounded text-sm">The robot wakes up. It looks at the sun. "Good morning!" it says.</pre>
                                     </div>
                                 </div>
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
                                     <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>[2과 5번]
 
-(1) The quick brown fox jumps over the lazy dog.
+(1) The robot wakes up.
 
+(2) It looks at the sun.
 
-(2) It was a beautiful day.</code></pre>
+(3) "Good morning!" it says.
+</code></pre>
                                 </div>
                             </div>
                         </div>
             
                         <div id="guide-sequence" class="tab-content hidden">
                              <h4 class="text-xl font-bold text-indigo-600 mb-4">순서 배열 예시</h4>
-                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 문장 순서를 무작위로 섞어 순서 배열 문제를 만듭니다. 보기와 정답이 함께 생성됩니다.</p>
+                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 문장 순서를 무작위로 섞어 순서 배열 문제를 만듭니다. '제목 포함하기'를 체크하면 문제 번호 등을 함께 넣을 수 있습니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
                                     <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                         <p class="font-mono text-xs text-gray-500 mb-1">[지문 입력란]</p>
+                                        <p class="font-mono text-xs text-gray-500 mb-1">[제목 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">1강 3번</pre>
+                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
                                         <pre class="bg-white p-2 rounded text-sm">First, gather your ingredients. Second, mix them in a bowl. Finally, bake for 20 minutes.</pre>
                                     </div>
                                 </div>
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>① Finally, bake for 20 minutes.
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>[1강 3번]
+                                        ① Finally, bake for 20 minutes.
 
 ② First, gather your ingredients.
 
@@ -160,46 +165,56 @@
             
                         <div id="guide-wordOrder" class="tab-content hidden">
                              <h4 class="text-xl font-bold text-indigo-600 mb-4">어순 배열 예시</h4>
-                            <p class="mb-6 text-gray-700">각 문장의 단어 순서를 무작위로 섞어 어순 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
+                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 각 문장의 단어 순서를 무작위로 섞어 어순 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
                                     <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
                                          <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                         <pre class="bg-white p-2 rounded text-sm">이것은 빠른 갈색 여우입니다.</pre>
+                                         <pre class="bg-white p-2 rounded text-sm">아기 곰은 눈덩이를 만들어요. 눈 오는 행복한 하루예요. 엄마 곰이 웃어요.</pre>
                                          <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">This is a quick brown fox.</pre>
+                                        <pre class="bg-white p-2 rounded text-sm">Baby Bear makes a snowball. It's a happy snowy day. Mama Bear laughs.</pre>
                                     </div>
                                 </div>
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 이것은 빠른 갈색 여우입니다.
-[ a / fox / brown / is / This / quick ]
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 아기 곰은 눈덩이를 만들어요.
+[ makes / bear / snowball / baby / a ]
+→
 
-→</code></pre>
+(2) 눈 오는 행복한 하루예요.
+[ a / snowy / day / happy / it's ]
+→
+.
+.
+</code></pre>
                                 </div>
                             </div>
                         </div>
             
                         <div id="guide-chunkOrder" class="tab-content hidden">
                              <h4 class="text-xl font-bold text-indigo-600 mb-4">구문 배열 예시 (AI)</h4>
-                            <p class="mb-6 text-gray-700">AI가 문장을 분석해 의미 단위(구문)로 나눈 뒤, 순서를 섞어 더 수준 높은 배열 문제를 만듭니다. 인터넷 연결이 필요합니다.</p>
+                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 의미 단위(구문)로 나누고 순서를 섞어 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
                                     <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
                                         <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                         <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다.</pre>
+                                         <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다. 나무들이 부드럽게 바람에 흔들린다.</pre>
                                         <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">I enjoy reading a book in the park.</pre>
+                                        <pre class="bg-white p-2 rounded text-sm">I like to read books in the park. The trees sway gently in the breeze.</pre>
                                     </div>
                                 </div>
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
                                     <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 나는 공원에서 책 읽는 것을 즐긴다.
-[ I enjoy / reading a book / in the park ]
+[ in / books / the park / like to read / I ]
+→
 
-→</code></pre>
+(2) 나무들이 부드럽게 바람에 흔들린다.
+[ sway gently / in / the breeze / The trees ]
+→
+</code></pre>
                                 </div>
                             </div>
                         </div>

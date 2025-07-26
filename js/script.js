@@ -158,6 +158,7 @@ function getFormattedTitle(title, format) {
     return (formats[format] || title) + '\n\n';
 }
 
+// 넘버링
 function splitSentences() {
     const format = document.getElementById('formatSelect').value;
     const titleFormat = document.getElementById('titleFormatSelect').value;
@@ -171,6 +172,7 @@ function splitSentences() {
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
+// 순서배열
 function generateSequenceQuestion() {
     const titleFormat = document.getElementById('titleFormatSelect').value;
     const numberingFormat = document.getElementById('formatSelect').value;
@@ -191,6 +193,7 @@ function generateSequenceQuestion() {
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
+// 어순배열
 function generateWordOrderQuestion() {
     const passages = getPassages();
     const numberingFormat = document.getElementById('formatSelect').value;
@@ -210,16 +213,26 @@ function generateWordOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            let words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
-            if (words.length > 0) { words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1); }
+            // 문장 끝 문장부호(.) 제거, 쉼표 제거
+            let cleaned = sentence.trim()
+                .replace(/[.,?!]$/, '')   // 끝의 온점, 물음표 등 제거
+                .replace(/,/g, '')        // 모든 쉼표 제거
+                .trim();
+
+            let words = cleaned.split(/\s+/).filter(Boolean);
+            if (words.length > 0) {
+                words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1);
+            }
             const shuffled = [...words].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
             return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
+
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
+// 구문배열
 function generateChunkOrderQuestion() {
     if (typeof nlp === 'undefined') {
         document.getElementById('outputArea').innerText = '오류: 구문 분석 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.';
@@ -244,20 +257,29 @@ function generateChunkOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            const originalSentence = sentence.trim();
+            // 문장 끝 온점, 쉼표 제거
+            const originalSentence = sentence.trim()
+                .replace(/[.,?!]$/, '')  // 끝 문장부호 제거
+                .replace(/,/g, '')       // 쉼표 제거
+                .trim();
+
             const doc = nlp(originalSentence);
             let chunks = doc.chunks().out('array');
+
             if (chunks.length <= 1) {
-                chunks = originalSentence.replace(/[.,?!]$/, '').split(/\s+/);
+                chunks = originalSentence.split(/\s+/);
             }
+
             const shuffled = [...chunks].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
 
             return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
+
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
+
 
 function copyResult() {
     const output = document.getElementById('outputArea').innerText;
