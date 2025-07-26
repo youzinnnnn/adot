@@ -1,109 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
-<link rel="shortcut icon" href="img/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
-<link rel="manifest" href="img/site.webmanifest" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>뚝딱 워크북</title>
+
+    <link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <link rel="manifest" href="img/site.webmanifest" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/compromise"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --primary-color: #4f46e5; --primary-hover: #4338ca; --primary-light: #b2c4ff; --bg-main: #f9fafb; --bg-card: #ffffff; --text-main: #1f2937; --text-secondary: #6b7280; --text-light: #9ca3af; --border-color: #e5e7eb; --border-focus: #a5b4fc; --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-        *, ::before, ::after {
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 200ms;
-        }
-        html, body { height: 100%; }
-        body {
-            font-family: 'Pretendard', sans-serif; background-color: var(--bg-main); color: var(--text-main); background-image: radial-gradient(circle at 1% 1%, rgba(165, 180, 252, 0.2) 0%, transparent 50%), radial-gradient(circle at 99% 99%, rgba(192, 132, 252, 0.2) 0%, transparent 50%);
-        }
-        .screen { opacity: 1; transform: translateY(0); transition: opacity 300ms ease-out, transform 300ms ease-out; }
-        .screen.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; position: absolute; }
-        .home-feature-card {
-            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1rem; padding: 2rem; text-align: center; cursor: pointer; position: relative; overflow: hidden; box-shadow: var(--shadow-md);
-        }
-        .home-feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--primary-color); }
-        .home-feature-card .icon-wrapper {
-            margin: 0 auto 1.25rem; width: 56px; height: 56px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; background-color: #eef2ff; color: var(--primary-color);
-        }
-        .home-feature-card:hover .icon-wrapper { background-color: var(--primary-color); color: white; transform: scale(1.1) rotate(-8deg); }
-        .workspace-grid { height: calc(100vh - 88px); }
-        .workspace-card {
-            background-color: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-md); display: flex; flex-direction: column; overflow: hidden;
-        }
-        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); background-color: #fcfdff; flex-shrink: 0; }
-        .card-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); background-color: #fcfdff; flex-shrink: 0; }
-        .passage-group-card { background-color: #f9fafb; border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1rem; }
-        .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .btn-primary { background-color: var(--primary-color); color: white; box-shadow: var(--shadow-sm); }
-        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-        .btn-secondary { background-color: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); }
-        .btn-secondary:hover { border-color: #cbd5e1; background-color: #f8fafc; color: var(--text-main); }
-        .btn-icon { padding: 0.5rem; }
-        .input-base { border-radius: 0.5rem; transition: all 0.2s ease; border: 1px solid var(--border-color); background-color: white; }
-        .input-base:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        textarea.input-base { padding: 0.75rem 1rem; }
-        select.input-base { padding: 0.5rem 2rem 0.5rem 0.75rem; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; }
-        .custom-scroll::-webkit-scrollbar { width: 8px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) backwards; }
-    </style>
-      <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    @font-face {
-      font-family: 'Cafe24Nyangi-W-v1.0';
-      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'HakgyoansimAllimjangTTF-B';
-      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimAllimjangTTF-B.woff2') format('woff2');
-      font-weight: 700;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'HSSanTokki20-Regular';
-      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Freesentation-7Bold';
-      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2');
-      font-weight: 700;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'IAMAPLAYER';
-      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/IAMAPLAYER.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
-  </style>
-
-  <style>
-    .font-IAMAPLAYER { font-family: 'IAMAPLAYER', sans-serif; }
-    .font-Freesentation-7Bold { font-family: 'Freesentation-7Bold', sans-serif; }
-    .font-HakgyoansimAllim { font-family: 'HakgyoansimAllimjangTTF-B', sans-serif; }
-    .font-SanTokki { font-family: 'HSSanTokki20-Regular', sans-serif; }
-  </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="w-full h-full overflow-hidden">
 
@@ -113,6 +28,7 @@
                 <div class="text-center mb-12">
                     <h1 class="text-4xl md:text-5xl font-HakgyoansimAllim text-gray-800 mb-3 tracking-tight">뚝딱 워크북 🛠️</h1>
                     <p class="text-lg text-gray-600">원하는 기능을 선택하고 학습 자료를 만들어보세요</p>
+                    <button onclick="openGuideModal()" class="btn btn-secondary mt-6">📖 사용법 보기</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div onclick="showWorkspace('split')" class="home-feature-card" style="animation-delay: 100ms;"><div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg></div><h2 class="text-xl font-bold text-gray-800 mb-1">문장 넘버링</h2><p class="text-gray-500 text-sm">글을 문장 단위로 분리합니다.</p></div>
@@ -124,19 +40,22 @@
         </div>
 
         <div id="workspace" class="screen hidden w-full h-full flex-col">
-            <header class="flex-shrink-0 h-16 bg-white/80 backdrop-blur-sm border-b border-gray-200/80 flex items-center justify-start gap-4 px-6">
-                <button onclick="goToHome()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>메인으로</button>
-                <h1 id="workspaceTitle" class="text-xl font-bold"></h1>
+            <header class="flex-shrink-0 h-16 bg-white/80 backdrop-blur-sm border-b border-gray-200/80 flex items-center justify-between gap-4 px-6">
+                <div class="flex items-center gap-4">
+                    <button onclick="goToHome()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>메인으로</button>
+                    <h1 id="workspaceTitle" class="text-xl font-bold"></h1>
+                </div>
+                <button onclick="openGuideModal()" class="btn btn-secondary text-sm">? 사용법</button>
             </header>
             <div class="workspace-grid flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 p-8 min-h-0">
                 <div class="workspace-card">
                     <div class="card-header flex justify-between items-center">
                         <div class="flex items-center gap-2">
-                        <h2 class="text-lg font-semibold">지문 입력</h2>
-                        <div id="includeExplanationsWrapper" class="hidden items-center gap-2">
-                            <input type="checkbox" id="includeExplanations" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                            <label for="includeExplanations" id="includeExplanationLabel" class="text-sm font-medium text-gray-600">해설 포함하기</label>
-                        </div>
+                            <h2 class="text-lg font-semibold">지문 입력</h2>
+                            <div id="includeExplanationsWrapper" class="hidden items-center gap-2">
+                                <input type="checkbox" id="includeExplanations" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <label for="includeExplanations" id="includeExplanationLabel" class="text-sm font-medium text-gray-600">해설 포함하기</label>
+                            </div>
                         </div>
                         <div class="flex items-center gap-2">                            
                             <span class="text-sm text-gray-500">지문 <b id="passageCount" class="text-base text-indigo-600">1</b></span>
@@ -162,7 +81,6 @@
                                 <label for="titleFormatSelect" class="text-sm font-medium text-gray-600">제목:</label>
                                 <select id="titleFormatSelect" class="input-base text-sm"><option value=" ">기본</option><option value="[ ]">[제목]</option><option value="( )">(제목)</option><option value="< >">&lt;제목&gt;</option></select>
                             </div>
-                            
                         </div>
                         <button onclick="generateResult()" class="btn btn-primary text-base"><span class="icon">✨</span>생성하기</button>
                     </div>
@@ -172,333 +90,125 @@
     </main>
 
     <div id="copyMessage" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">✓ 클립보드에 복사되었습니다!</div>
-
-    <script>
-        let currentFunction = '';
-        const homeScreen = document.getElementById('home');
-        const workspaceScreen = document.getElementById('workspace');
-        
-        const functionSettings = {
-            split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-            sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-            wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-            chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: "자동으로 구문을 나눌 영어 문장을 한 줄씩 입력하세요.", canIncludeExplanations: true }
-        };
-
-        function switchScreen(show, hide) {
-            hide.classList.add('hidden');
-            setTimeout(() => { show.classList.remove('hidden'); }, 50);
-        }
-
-        function showWorkspace(func) {
-            currentFunction = func;
-            const settings = functionSettings[func];
-            switchScreen(workspaceScreen, homeScreen);
-            document.getElementById('workspaceTitle').innerText = settings.title;
-            const explanationWrapper = document.getElementById('includeExplanationsWrapper');
-            explanationWrapper.classList.toggle('hidden', !settings.canIncludeExplanations);
-            explanationWrapper.classList.toggle('flex', settings.canIncludeExplanations);
-
-            if (settings.canIncludeExplanations) {
-            const checkbox = document.getElementById('includeExplanations');
-            checkbox.checked = false;
-            checkbox.dispatchEvent(new Event('change'));
-
-            // ✅ 여기서 라벨 텍스트 설정
-            document.getElementById('includeExplanationLabel').innerText =
-                (func === 'split' || func === 'sequence') ? '제목 포함하기' : '해설 포함하기';
-            }
-            
-            document.getElementById('passagesContainer').innerHTML = '';
-            addPassage();
-            document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
-        }
-
-        function goToHome() {
-            switchScreen(homeScreen, workspaceScreen);
-            currentFunction = '';
-        }
-        
-        function createPassageElement() {
-            const settings = functionSettings[currentFunction] || {};
-            const passageGroup = document.createElement('div');
-            passageGroup.className = 'passage-group-card space-y-3 animate-fade-in';
-            
-            const explanationIsVisible = settings.canIncludeExplanations && document.getElementById('includeExplanations').checked;
-
-            const titleInputHTML = `
-                <textarea class="title-input w-full text-sm resize-y input-base ${settings.canIncludeExplanations && !explanationIsVisible ? 'hidden' : ''}" placeholder="${settings.titlePlaceholder}" rows="1"></textarea>
-            `;
-            const bodyInputHTML = `
-                <textarea class="body-input w-full text-sm resize-y input-base" placeholder="${settings.bodyPlaceholder}" rows="7"></textarea>
-            `;
-
-            // 어순/구문 배열일 때만 해설(title) 입력란을 표시
-            passageGroup.innerHTML = (settings.canIncludeExplanations ? titleInputHTML : '') + bodyInputHTML;
-            return passageGroup;
-        }
-
-        function addPassage() {
-            const container = document.getElementById('passagesContainer');
-            const newPassage = createPassageElement();
-            container.appendChild(newPassage);
-            updatePassageCount();
-            newPassage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function removePassage() {
-            const container = document.getElementById('passagesContainer');
-            if (container.children.length > 1) {
-                const lastChild = container.lastChild;
-                lastChild.style.animation = 'fadeOut 0.3s ease forwards';
-                setTimeout(() => {
-                    container.removeChild(lastChild);
-                    updatePassageCount();
-                }, 300);
-            }
-        }
-        
-        function updatePassageCount() {
-            document.getElementById('passageCount').innerText = document.querySelectorAll('.passage-group-card').length;
-        }
-
-        function getPassages() {
-            return Array.from(document.querySelectorAll('.passage-group-card')).map(group => {
-                const titleInput = group.querySelector('.title-input');
-                const bodyInput = group.querySelector('.body-input');
-                return {
-                    title: titleInput ? titleInput.value.trim() : '',
-                    body: bodyInput ? bodyInput.value.trim() : '',
-                };
-            }).filter(p => p.body);
-        }
-
-        function generateResult() {
-            if (!currentFunction) return;
-            switch(currentFunction) {
-                case 'split': splitSentences(); break;
-                case 'sequence': generateSequenceQuestion(); break;
-                case 'wordOrder': generateWordOrderQuestion(); break;
-                case 'chunkOrder': generateChunkOrderQuestion(); break;
-            }
-        }
-
-        function extractSentences(text) {
-    const sentences = [];
-    let i = 0;
-    const len = text.length;
-
-    while (i < len) {
-        let start = i;
-
-        // 따옴표 시작 여부 확인
-        if (text[i] === '"') {
-            i++; // 시작 따옴표 넘김
-            while (i < len && text[i] !== '"') i++; // 끝 따옴표까지
-
-            if (i < len) i++; // 닫는 따옴표 포함
-
-            // 인용 끝난 뒤 화자 태그까지 포함
-            while (i < len && /[ \w,’“,\"-]/.test(text[i])) i++;
-
-            if (i < len && /[.!?]/.test(text[i])) i++; // 문장부호 포함
-
-            sentences.push(text.slice(start, i).trim());
-        } else {
-            // 따옴표가 없는 일반 문장
-            while (i < len) {
-                // 문장 중간 인용부호는 무시
-                if (text[i] === '"') {
-                    i++;
-                    while (i < len && text[i] !== '"') i++;
-                    if (i < len) i++;
-                    continue;
-                }
-
-                if (/[.!?]/.test(text[i])) {
-                    i++;
-                    break;
-                }
-                i++;
-            }
-
-            const sentence = text.slice(start, i).trim();
-            if (sentence) sentences.push(sentence);
-        }
-    }
-
-    return sentences;
-}
-
-
-        function getNumberingPrefix(format, num) {
-            const circles = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
-            switch(format) {
-                case "(1)": return `(${num}) `;
-                case "1.": return `${num}. `;
-                case "①": return (num > 0 && num <= 20 ? circles[num-1] : `(${num})`) + ' ';
-                case "(A)": return `(${(String.fromCharCode(64 + num))}) `;
-                default: return `(${num}) `;
-            }
-        }
-
-        function getFormattedTitle(title, format) {
-            if (!title) return '';
-            const formats = { " ": title, "[ ]": `[${title}]`, "( )": `(${title})`, "< >": `<${title}>` };
-            return (formats[format] || title) + '\n\n';
-        }
-        
-        function splitSentences() {
-            const format = document.getElementById('formatSelect').value;
-            const titleFormat = document.getElementById('titleFormatSelect').value;
-            const passages = getPassages();
-            const result = passages.map(({ title, body }) => {
-                const formattedTitle = getFormattedTitle(title, titleFormat);
-                const sentences = extractSentences(body);
-                const numbered = sentences.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s.trim()}`).join('\n\n\n');
-                return formattedTitle + numbered;
-            }).join('\n\n🟪\n\n');
-            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
-        }
-
-        function generateSequenceQuestion() {
-            const titleFormat = document.getElementById('titleFormatSelect').value;
-            const numberingFormat = document.getElementById('formatSelect').value; // 2. 번호 서식 가져오기
-            const passages = getPassages();
-            const result = passages.map(({ title, body }) => {
-                const formattedTitle = getFormattedTitle(title, titleFormat);
-                const sentences = extractSentences(body).map(s => s.trim());
-                if (sentences.length < 2) return `${formattedTitle}두 문장 이상 입력해야 합니다.`;
+    
+    <div id="guide-modal" class="modal-overlay hidden">
+        <div class="modal-content custom-scroll">
+            <button onclick="closeGuideModal()" class="modal-close-button">&times;</button>
+            <div id="usage-guide" class="w-full">
+                <div class="text-center pt-8 mb-6">
+                    <h3 class="text-3xl font-bold font-HakgyoansimAllim text-gray-800">사용 가이드 📖</h3>
+                    <p class="mt-2 text-gray-600">각 기능의 사용 예시를 확인해보세요.</p>
+                </div>
                 
-                const shuffled = [...sentences].sort(() => Math.random() - 0.5);
-                // 2. 선택된 번호 서식으로 문제 생성
-                const question = shuffled.map((s, i) => `${getNumberingPrefix(numberingFormat, i + 1)}${s}`).join('\n\n');
-                // 2. 정답 순서에도 동일한 서식 적용 후, 기호 제거
-                const answerOrder = sentences.map(original => 
-                    getNumberingPrefix(numberingFormat, shuffled.indexOf(original) + 1).trim().replace(/[().\s]/g, '')
-                );
+                <div class="bg-white rounded-xl overflow-hidden px-4 sm:px-6 pb-6">
+                    <div class="flex border-b border-gray-200 bg-gray-50/50">
+                        <button onclick="switchTab(event, 'guide-split')" class="tab-button active">문장 넘버링</button>
+                        <button onclick="switchTab(event, 'guide-sequence')" class="tab-button">순서 배열</button>
+                        <button onclick="switchTab(event, 'guide-wordOrder')" class="tab-button">어순 배열</button>
+                        <button onclick="switchTab(event, 'guide-chunkOrder')" class="tab-button">구문 배열</button>
+                    </div>
+                    
+                    <div class="p-6 md:p-8">
+                        <div id="guide-split" class="tab-content active">
+                            <h4 class="text-xl font-bold text-indigo-600 mb-4">문장 넘버링 예시</h4>
+                            <p class="mb-6 text-gray-700">입력한 지문을 문장 단위로 자동 분리하고, 선택한 형식의 번호를 붙여줍니다. '제목 포함하기'를 체크하면 문제 번호 등을 함께 넣을 수 있습니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
+                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
+                                        <p class="font-mono text-xs text-gray-500 mb-1">[제목 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">2과 5번</pre>
+                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">The quick brown fox jumps over the lazy dog. It was a beautiful day.</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>[2과 5번]
 
-                return `${formattedTitle}${question}\n\n정답: ${answerOrder.join(" → ")}`;
-            }).join('\n\n🟪\n\n');
-            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
-        }
-
-        function generateWordOrderQuestion() {
-            const passages = getPassages();
-            const numberingFormat = document.getElementById('formatSelect').value;
-            const includeExplanations = document.getElementById('includeExplanations').checked;
-            let questionCount = 1;
-
-            const result = passages.map(({ title, body }) => {
-                const sentences = extractSentences(body);
-                let explanations = [];
-                // '해설 포함'이 체크된 경우에만 해설을 문장 단위로 추출
-                if (includeExplanations && title) {
-                    explanations = extractSentences(title); // 3. 해설을 문장 단위로 카운트
-                }
-
-                if (includeExplanations && title && explanations.length !== sentences.length) {
-                    return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
-                }
-
-                return sentences.map((sentence, idx) => {
-                    const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-                    let words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
-                    if (words.length > 0) { words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1); }
-                    const shuffled = [...words].sort(() => Math.random() - 0.5);
-                    const numbering = getNumberingPrefix(numberingFormat, questionCount++);
-                    return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
-                }).join('\n\n');
-            }).join('\n\n🟪\n\n');
-            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
-        }
-
-        function generateChunkOrderQuestion() {
-            // 0. 라이브러리 확인
-            if (typeof nlp === 'undefined') {
-                document.getElementById('outputArea').innerText =
-                    '오류: 구문 분석 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.';
-                return;
-            }
-
-            const passages           = getPassages();
-            const numberingFormat    = document.getElementById('formatSelect').value;
-            const includeExplanations = document.getElementById('includeExplanations').checked;
-            let   questionCount      = 1;
-
-            const result = passages.map(({ title, body }) => {
-                /* ✅ 1) 지문을 문장 단위로 분리 */
-                const sentences = extractSentences(body);          // 🔄 여기만 바꾸면 됩니다
-
-                /* ✅ 2) (옵션) 해설도 문장 단위로 분리 */
-                let explanations = [];
-                if (includeExplanations && title) {
-                    explanations = extractSentences(title);
-                }
-
-                /* ✅ 3) 문장·해설 개수 불일치 검사 */
-                if (includeExplanations && title && explanations.length !== sentences.length) {
-                    return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
-                }
-
-                /* ✅ 4) 각 문장마다 문제 생성 */
-                return sentences.map((sentence, idx) => {
-                    const explanation = (includeExplanations && explanations[idx])
-                        ? `${explanations[idx].trim()}\n`
-                        : '';
-
-                    const originalSentence = sentence.trim();
-
-                    // 4‑a. Compromise로 의미 단위(chunk) 추출
-                    const doc    = nlp(originalSentence);
-                    let   chunks = doc.chunks().out('array');
-
-                    // 4‑b. chunk가 1개 이하면 단어 단위로 fallback
-                    if (chunks.length <= 1) {
-                        chunks = originalSentence.replace(/[.,?!]$/, '').split(/\s+/);
-                    }
-
-                    // 4‑c. 무작위 섞기
-                    const shuffled  = [...chunks].sort(() => Math.random() - 0.5);
-                    const numbering = getNumberingPrefix(numberingFormat, questionCount++);
-
-                    return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
-                }).join('\n\n');   // ← 문장별로 한 줄씩 구분
-            }).join('\n\n🟪\n\n'); // ← 지문 단위 구분선
-
-            document.getElementById('outputArea').innerText =
-                result.trim() || '생성할 내용이 없습니다.';
-        }
+(1) The quick brown fox jumps over the lazy dog.
 
 
-        function copyResult() {
-            const output = document.getElementById('outputArea').innerText;
-            if (output && output !== '여기에 결과가 표시됩니다...') {
-                navigator.clipboard.writeText(output).then(() => {
-                    const message = document.getElementById('copyMessage');
-                    message.classList.remove('opacity-0', 'translate-y-4');
-                    message.classList.add('opacity-100', 'translate-y-0');
-                    setTimeout(() => {
-                        message.classList.remove('opacity-100', 'translate-y-0');
-                        message.classList.add('opacity-0', 'translate-y-4');
-                    }, 2000);
-                });
-            }
-        }
+(2) It was a beautiful day.</code></pre>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div id="guide-sequence" class="tab-content hidden">
+                             <h4 class="text-xl font-bold text-indigo-600 mb-4">순서 배열 예시</h4>
+                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 문장 순서를 무작위로 섞어 순서 배열 문제를 만듭니다. 보기와 정답이 함께 생성됩니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
+                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
+                                         <p class="font-mono text-xs text-gray-500 mb-1">[지문 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">First, gather your ingredients. Second, mix them in a bowl. Finally, bake for 20 minutes.</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>① Finally, bake for 20 minutes.
 
-        document.addEventListener('DOMContentLoaded', () => {
-             workspaceScreen.classList.add('hidden');
-             // 1. '해설 포함' 체크박스 이벤트 리스너 추가
-             document.getElementById('includeExplanations').addEventListener('change', (e) => {
-                const isChecked = e.target.checked;
-                document.querySelectorAll('.passage-group-card').forEach(card => {
-                    const titleInput = card.querySelector('.title-input');
-                    if (titleInput) {
-                        titleInput.classList.toggle('hidden', !isChecked);
-                    }
-                });
-             });
-        });
-    </script>
+② First, gather your ingredients.
+
+③ Second, mix them in a bowl.
+
+정답: ② → ③ → ①</code></pre>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div id="guide-wordOrder" class="tab-content hidden">
+                             <h4 class="text-xl font-bold text-indigo-600 mb-4">어순 배열 예시</h4>
+                            <p class="mb-6 text-gray-700">각 문장의 단어 순서를 무작위로 섞어 어순 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
+                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
+                                         <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
+                                         <pre class="bg-white p-2 rounded text-sm">이것은 빠른 갈색 여우입니다.</pre>
+                                         <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">This is a quick brown fox.</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 이것은 빠른 갈색 여우입니다.
+[ a / fox / brown / is / This / quick ]
+
+→</code></pre>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div id="guide-chunkOrder" class="tab-content hidden">
+                             <h4 class="text-xl font-bold text-indigo-600 mb-4">구문 배열 예시 (AI)</h4>
+                            <p class="mb-6 text-gray-700">AI가 문장을 분석해 의미 단위(구문)로 나눈 뒤, 순서를 섞어 더 수준 높은 배열 문제를 만듭니다. 인터넷 연결이 필요합니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
+                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
+                                        <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
+                                         <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다.</pre>
+                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
+                                        <pre class="bg-white p-2 rounded text-sm">I enjoy reading a book in the park.</pre>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
+                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 나는 공원에서 책 읽는 것을 즐긴다.
+[ I enjoy / reading a book / in the park ]
+
+→</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/script.js"></script>
 </body>
 </html>
