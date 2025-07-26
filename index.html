@@ -1,16 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> 자료 제작 매크로 </title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
-  <style>
+<link rel="icon" type="image/png" href="fv/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="fv/favicon.svg" />
+<link rel="shortcut icon" href="fv/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="fv/apple-touch-icon.png" />
+<link rel="manifest" href="fv/site.webmanifest" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뚝딱 워크북</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/compromise"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5; --primary-hover: #4338ca; --primary-light: #b2c4ff; --bg-main: #f9fafb; --bg-card: #ffffff; --text-main: #1f2937; --text-secondary: #6b7280; --text-light: #9ca3af; --border-color: #e5e7eb; --border-focus: #a5b4fc; --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        *, ::before, ::after {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Pretendard', sans-serif; background-color: var(--bg-main); color: var(--text-main); background-image: radial-gradient(circle at 1% 1%, rgba(165, 180, 252, 0.2) 0%, transparent 50%), radial-gradient(circle at 99% 99%, rgba(192, 132, 252, 0.2) 0%, transparent 50%);
+        }
+        .screen { opacity: 1; transform: translateY(0); transition: opacity 300ms ease-out, transform 300ms ease-out; }
+        .screen.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; position: absolute; }
+        .home-feature-card {
+            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1rem; padding: 2rem; text-align: center; cursor: pointer; position: relative; overflow: hidden; box-shadow: var(--shadow-md);
+        }
+        .home-feature-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--primary-color); }
+        .home-feature-card .icon-wrapper {
+            margin: 0 auto 1.25rem; width: 56px; height: 56px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; background-color: #eef2ff; color: var(--primary-color);
+        }
+        .home-feature-card:hover .icon-wrapper { background-color: var(--primary-color); color: white; transform: scale(1.1) rotate(-8deg); }
+        .workspace-grid { height: calc(100vh - 88px); }
+        .workspace-card {
+            background-color: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-md); display: flex; flex-direction: column; overflow: hidden;
+        }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); background-color: #fcfdff; flex-shrink: 0; }
+        .card-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); background-color: #fcfdff; flex-shrink: 0; }
+        .passage-group-card { background-color: #f9fafb; border: 1px solid var(--border-color); border-radius: 0.75rem; padding: 1rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .btn-primary { background-color: var(--primary-color); color: white; box-shadow: var(--shadow-sm); }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn-secondary { background-color: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { border-color: #cbd5e1; background-color: #f8fafc; color: var(--text-main); }
+        .btn-icon { padding: 0.5rem; }
+        .input-base { border-radius: 0.5rem; transition: all 0.2s ease; border: 1px solid var(--border-color); background-color: white; }
+        .input-base:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        textarea.input-base { padding: 0.75rem 1rem; }
+        select.input-base { padding: 0.5rem 2rem 0.5rem 0.75rem; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; }
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) backwards; }
+    </style>
+      <style>
     html {
       scroll-behavior: smooth;
     }
@@ -52,594 +104,401 @@
     .font-HakgyoansimAllim { font-family: 'HakgyoansimAllimjangTTF-B', sans-serif; }
     .font-SanTokki { font-family: 'HSSanTokki20-Regular', sans-serif; }
   </style>
-
-  <style>
-    :root {
-      --primary-color: #14B8A6; /* teal-500 */
-      --primary-hover-color: #0D9488; /* teal-600 */
-      --bg-color: #F1F5F9; /* slate-100 */
-      --card-bg-color: #FFFFFF;
-      --border-color: #E2E8F0; /* slate-200 */
-      --text-primary: #1E293B; /* slate-800 */
-      --text-secondary: #475569; /* slate-600 */
-      --input-bg: #F8FAFC; /* slate-50 */
-    }
-    body {
-      font-family: 'Pretendard', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-primary);
-    }
-    .main-grid {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 100vh;
-    }
-
-    .control-panel {
-      background-color: var(--card-bg-color);
-      padding: 2.5rem;
-      border-right: 1px solid var(--border-color);
-    }
-    .workspace {
-      padding: 2.5rem;
-      overflow-y: auto;
-      height: 100vh;
-    }
-    .card {
-      background: var(--card-bg-color);
-      border-radius: 1rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-    }
-    textarea, select {
-      transition: all 0.2s ease;
-      border: 1px solid var(--border-color);
-      border-radius: 0.5rem;
-      padding: 0.8rem !important;
-      background: var(--input-bg);
-      color: var(--text-primary);
-    }
-    textarea::placeholder {
-      color: #94A3B8; /* slate-400 */
-    }
-    textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
-      background: #fff;
-    }
-    .primary-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border-radius: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 4px rgba(20, 184, 166, 0.2);
-    }
-    .primary-btn:hover {
-      background-color: var(--primary-hover-color);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(20, 184, 166, 0.3);
-    }
-    .secondary-btn {
-      background-color: #F1F5F9; /* slate-100 */
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 0.5rem;
-      padding: 0.452rem 1rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-    .secondary-btn:hover {
-      background-color: #E2E8F0; /* slate-200 */
-      border-color: #CBD5E1; /* slate-300 */
-    }
-    #copyMessage {
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      position: fixed;
-      bottom: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    #copyMessage.show {
-      bottom: 2rem;
-      opacity: 1;
-    }
-    #passageCountDisplay span {
-      font-weight: 500;
-    }
-    @media (max-width: 850px) {
-      .control-panel label {
-        font-size: 0.8rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .control-panel select {
-        font-size: 0.75rem;
-      }
-
-      .main-grid {
-        grid-template-columns: 180px 1fr;
-      }
-      .control-panel {
-        padding: 1.7rem;
-      }
-      .control-panel h1 {
-        font-size: 1.25rem;
-      }
-      .primary-btn {
-        padding: 0.5rem 0.9rem;
-        font-size: 0.8rem;
-      }
-      .secondary-btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.875rem;
-      }
-      select {
-        font-size: 0.875rem;
-      }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in {
-      animation: fadeIn 0.4s ease forwards;
-    }
-    
-  </style>
 </head>
-<body>
-  <div class="main-grid">
-    <aside class="control-panel flex flex-col space-y-8">
-      <div>
-        <h1 class="font-SanTokki text-2xl font-bold text-teal-700 leading-tight"> 학습 자료 제작
-        <h1 class="font-IAMAPLAYER text-sm font-bold text-teal-700 leading-tight">  WORKBOOK MAKER
-      </div>
+<body class="w-full h-full overflow-hidden">
 
-      <div class="font-Freesentation-7Bold flex-1 space-y-8 font-">
-        <div>
-          <label class="block text-base font-medium text-slate-700 mb-3">생성 옵션</label>
-          <div class="space-y-4">
-            <div>
-              <label for="formatSelect" class="block text-sm font-medium text-slate-500 mb-1">넘버링 스타일</label>
-              <select id="formatSelect" class="w-full p-2 text-md rounded-md">
-                <option value="(1)">(1)</option>
-                <option value="1.">1.</option>
-                <option value="①">①</option>
-                <option value="(A)">(A)</option>
-              </select>
-            </div>
-            <div>
-              <label for="titleFormatSelect" class="block text-sm font-medium text-slate-500 mb-1">제목 스타일</label>
-              <select id="titleFormatSelect" class="w-full p-2 rounded-md">
-                <option value=" ">제목</option>
-                <option value="[ ]">[제목]</option>
-                <option value="( )">(제목)</option>
-                <option value="< >">&lt;제목&gt;</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div>
-            <label class="block text-base font-medium text-slate-700 mb-3">실행</label>
-            <div class="space-y-3">
-                <button onclick="splitAll()" class="primary-btn w-full">문장 나누기</button>
-                <button onclick="generateAllOrderQuestions()" class="primary-btn w-full">순서 배열</button>
-                <button onclick="toggleShowExplanations(); generateAllWordShuffles();" class="primary-btn w-full">어순 배열</button>
-                <button onclick="openGuideModal()" class="secondary-btn w-full">사용 설명서 보기</button>
-                <button onclick="openGuideModal2()" class="secondary-btn w-full">샘플 데이터</button>
+    <main class="relative w-full h-full">
+        <div id="home" class="screen w-full h-full flex items-center justify-center p-4">
+            <div class="w-full max-w-6xl animate-fade-in">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-HakgyoansimAllim text-gray-800 mb-3 tracking-tight">뚝딱 워크북 🛠️</h1>
+                    <p class="text-lg text-gray-600">원하는 기능을 선택하고 학습 자료를 만들어보세요</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div onclick="showWorkspace('split')" class="home-feature-card" style="animation-delay: 100ms;"><div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg></div><h2 class="text-xl font-bold text-gray-800 mb-1">문장 넘버링</h2><p class="text-gray-500 text-sm">글을 문장 단위로 분리합니다.</p></div>
+                    <div onclick="showWorkspace('sequence')" class="home-feature-card" style="animation-delay: 200ms;"><div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg></div><h2 class="text-xl font-bold text-gray-800 mb-1">순서 배열</h2><p class="text-gray-500 text-sm">문장 순서를 무작위로 섞습니다.</p></div>
+                    <div onclick="showWorkspace('wordOrder')" class="home-feature-card" style="animation-delay: 300ms;"><div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg></div><h2 class="text-xl font-bold text-gray-800 mb-1">어순 배열</h2><p class="text-gray-500 text-sm">문장 내 단어 순서를 섞습니다.</p></div>
+                    <div onclick="showWorkspace('chunkOrder')" class="home-feature-card" style="animation-delay: 400ms;"><div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg></div><h2 class="text-xl font-bold text-gray-800 mb-1">구문 배열</h2><p class="text-gray-500 text-sm">AI가 의미 단위로 자동 분리/배열</p></div>
+                </div>
             </div>
         </div>
-      </div>
-      <div class="text-center text-xs text-slate-400">
-        &copy; youzinnnnn workboookmaker
-        update: 2025.07.13
-      </div>
-    </aside>
 
-    <main class="workspace space-y-6 p-5">
-    <div class="flex flex-col lg:flex-row gap-5">
-      <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
-        <!-- 입력 -->
-        <div class="p-7 border-b">
-          <h2 class="text-lg font-bold text-slate-800">지문 입력</h2>
-        </div>
-
-        <!-- 입력란 -->
-        <div id="passagesContainer" class="flex-1 overflow-y-auto px-5 py-5 space-y-5">
-          <div class="passage-group space-y-3">
-              <svg width="12" height="10">
-                <rect x="0" y="0" width="10" height="10" rx="6" ry="6" fill="#14B8A6" />
-              </svg>
-            <div class="flex items-center gap-2">
-              <!-- 제목 입력란 -->
-              <textarea placeholder="제목 또는 해설을 입력하세요" rows="1"
-                class="w-full p-3 text-sm min-h-[40px] overflow-hidden resize-none auto-expand"></textarea>
+        <div id="workspace" class="screen hidden w-full h-full flex-col">
+            <header class="flex-shrink-0 h-16 bg-white/80 backdrop-blur-sm border-b border-gray-200/80 flex items-center justify-start gap-4 px-6">
+                <button onclick="goToHome()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>메인으로</button>
+                <h1 id="workspaceTitle" class="text-xl font-bold"></h1>
+            </header>
+            <div class="workspace-grid flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 p-8 min-h-0">
+                <div class="workspace-card">
+                    <div class="card-header flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                        <h2 class="text-lg font-semibold">지문 입력</h2>
+                        <div id="includeExplanationsWrapper" class="hidden items-center gap-2">
+                            <input type="checkbox" id="includeExplanations" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <label for="includeExplanations" id="includeExplanationLabel" class="text-sm font-medium text-gray-600">해설 포함하기</label>
+                        </div>
+                        </div>
+                        <div class="flex items-center gap-2">                            
+                            <span class="text-sm text-gray-500">지문 <b id="passageCount" class="text-base text-indigo-600">1</b></span>
+                            <button onclick="addPassage()" class="btn btn-secondary btn-icon h-8 w-8"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg></button>
+                            <button onclick="removePassage()" class="btn btn-secondary btn-icon h-8 w-8"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+                    <div id="passagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scroll"></div>
+                </div>
+                <div class="workspace-card">
+                    <div class="card-header flex justify-between items-center">
+                        <h2 class="text-lg font-semibold">결과 확인</h2>
+                        <button onclick="copyResult()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3.25H5.25a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9.5A.75.75 0 0016.5 9V5.25a2 2 0 00-2-2H13.25a.75.75 0 000 1.5H15a.5.5 0 01.5.5v10a.5.5 0 01-.5-.5H5.25a.5.5 0 01-.5-.5V5.25a.5.5 0 01.5-.5H7a.75.75 0 000-1.5z" /><path d="M9.25 2.25a.75.75 0 01.75-.75h4a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0V3.56l-3.22 3.22a.75.75 0 11-1.06-1.06l3.22-3.22H10a.75.75 0 01-.75-.75z" /></svg>결과 복사</button>
+                    </div>
+                    <div id="outputArea" class="flex-1 overflow-y-auto p-5 bg-slate-50 text-sm leading-relaxed whitespace-pre-wrap custom-scroll">여기에 결과가 표시됩니다...</div>
+                    <div class="card-footer flex justify-between items-center gap-4 flex-wrap">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <label for="formatSelect" class="text-sm font-medium text-gray-600">번호:</label>
+                                <select id="formatSelect" class="input-base text-sm"><option value="(1)">(1)</option><option value="1.">1.</option><option value="①">①</option><option value="(A)">(A)</option></select>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label for="titleFormatSelect" class="text-sm font-medium text-gray-600">제목:</label>
+                                <select id="titleFormatSelect" class="input-base text-sm"><option value=" ">기본</option><option value="[ ]">[제목]</option><option value="( )">(제목)</option><option value="< >">&lt;제목&gt;</option></select>
+                            </div>
+                            
+                        </div>
+                        <button onclick="generateResult()" class="btn btn-primary text-base"><span class="icon">✨</span>생성하기</button>
+                    </div>
+                </div>
             </div>
-            <!-- 본문 입력란 -->
-            <textarea placeholder="이곳에 영어 지문을 입력하세요. 문장 끝에 마침표, 물음표, 느낌표를 꼭 붙여주세요."
-              rows="6" class="w-full resize-y p-3 text-sm"></textarea>
-          </div>
-        </div>
-
-        <!-- 하단 고정 버튼 -->
-        <div class="p-4 border-t flex justify-end items-center gap-3 flex-wrap shrink-0">
-          <div class="flex items-center gap-3">
-          <div id="passageCountDisplay" class="flex items-center text-sm text-slate-500 mr-auto">
-            <span>지문 수 <span id="passageCount" class="font-bold font-HakgyoansimAllim text-teal-500">1</span>개</span>
-          </div>
-
-          <button onclick="addPassage()" class="secondary-btn text-sm flex items-center justify-center gap-1.5">
-            <!-- 추가 아이콘 -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-            </svg>
-            추가
-          </button>
-
-          <button onclick="removePassage()" class="secondary-btn text-sm flex items-center justify-center gap-1.5">
-            <!-- 삭제 아이콘 -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z" clip-rule="evenodd" />
-            </svg>
-            삭제
-          </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card flex-1 min-w-0 h-[calc(100vh-50px)] flex flex-col">
-      <div class="p-6 border-b shrink-0 flex justify-between items-center">
-        <!--  결과 -->
-        <h2 class="text-lg font-bold text-slate-800">결과</h2>
-
-        <!-- 해설 체크박스 + 복사 버튼 -->
-        <div class="flex items-center gap-4">
-          <div id="showExplanationsWrapper" style="display: none;">
-            <label class="inline-flex items-center gap-2 text-sm text-slate-700">
-              <input type="checkbox" id="showExplanations" class="accent-teal-500 rounded" checked>
-              해석(제목) 함께 보기
-            </label>
-          </div>
-
-          <button onclick="copyResult()" class="secondary-btn text-sm flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M7 3.25H5.25a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9.5A.75.75 0 0016.5 9V5.25a2 2 0 00-2-2H13.25a.75.75 0 000 1.5H15a.5.5 0 01.5.5v10a.5.5 0 01-.5.5H5.25a.5.5 0 01-.5-.5V5.25a.5.5 0 01.5-.5H7a.75.75 0 000-1.5z" />
-              <path d="M9.25 2.25a.75.75 0 01.75-.75h4a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0V3.56l-3.22 3.22a.75.75 0 11-1.06-1.06l3.22-3.22H10a.75.75 0 01-.75-.75z" />
-            </svg>
-            결과 복사
-          </button>
-        </div>
-      </div>
-        <div class="flex-1 overflow-y-auto p-4">
-    
-          <div class="result-controls mb-3 flex justify-end">
-            <!-- 기본 숨김 -->
-        </div>
-        <div id="outputArea" class="bg-slate-50 rounded-lg text-sm leading-relaxed p-2 min-h-[70vh]">
-          </div>
         </div>
     </main>
-    </div>
 
-  <div id="copyMessage" class="opacity-0 bg-slate-800 text-white text-sm font-medium py-2 px-5 rounded-full shadow-lg">
-    ✓ 클립보드에 복사되었습니다!
-  </div>
+    <div id="copyMessage" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">✓ 클립보드에 복사되었습니다!</div>
 
-  <script>
-    function addPassage() {
-      const container = document.getElementById("passagesContainer");
-      const newPassageGroup = document.createElement("div");
-      newPassageGroup.className = "passage-group space-y-3 animate-fade-in";
-      newPassageGroup.innerHTML = `
-            <svg width="12" height="10">
-                <rect x="0" y="0" width="10" height="10" rx="6" ry="6" fill="#14B8A6" />
-              </svg>
-            <div class="flex items-center gap-2">
-              <!-- 제목 입력란 -->
-              <textarea placeholder="제목 또는 해설을 입력하세요" rows="1"
-                class="w-full p-3 text-sm min-h-[40px] overflow-hidden resize-none auto-expand"></textarea>
-            </div>
-
-            <!-- 본문 입력란 -->
-            <textarea placeholder="이곳에 영어 지문을 입력하세요. 문장 끝에 마침표, 물음표, 느낌표를 꼭 붙여주세요."
-              rows="6" class="w-full resize-y p-3 text-sm"></textarea>
-          </div>
-      `;
-      container.appendChild(newPassageGroup);
-      newPassageGroup.scrollIntoView({ behavior: 'smooth' });
-
-      updatePassageCount();
-    }
-
-    function removePassage() {
-      const container = document.getElementById("passagesContainer");
-      const passageGroups = container.getElementsByClassName("passage-group");
-      if (passageGroups.length > 1) {
-        const lastGroup = passageGroups[passageGroups.length - 1];
-        container.removeChild(lastGroup);
-        updatePassageCount();
-      }
-    }
-
-    function getPassages() {
-      return Array.from(document.getElementsByClassName("passage-group")).map(group => {
-        const textareas = group.querySelectorAll("textarea");
-        return {
-          title: textareas[0]?.value.trim() || "제목 없음",
-          body: textareas[1]?.value.trim() || ""
-        };
-      }).filter(passage => passage.body);
-    }
-
-    function updatePassageCount() {
-      const count = document.querySelectorAll(".passage-group").length;
-      document.getElementById("passageCount").innerText = count;
-    }
-
-    function extractSentences(text) {
-      return text.match(/[^.?!]+[.?!]+/g) || [];
-    }
-
-    function getNumberingPrefix(format, num) {
-      const circles = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
-      switch(format) {
-        case "(1)": return `(${num}) `;
-        case "1.": return `${num}. `;
-        case "①": return (num <= 20 ? circles[num-1] : `(${num})`) + ' ';
-        case "(A)": return `(${(String.fromCharCode(64 + num))}) `;
-        default: return `(${num}) `;
-      }
-    }
-
-    function getFormattedTitle(title, format) {
-        if (title === '제목 없음') return '';
-        const formats = { " ": title, "[ ]": `[${title}]`, "( )": `(${title})`, "< >": `<${title}>` };
-        return formats[format] || title;
-    }
-
-    // 문장 나누기
-    function splitAll() {
-      hideExplanationCheckbox(); 
-
-      const format = document.getElementById("formatSelect").value;
-      const titleFormat = document.getElementById("titleFormatSelect").value;
-      const passages = getPassages();
-      let result = passages.map(({ title, body }) => {
-        const formattedTitle = getFormattedTitle(title, titleFormat);
-        const sentences = extractSentences(body);
-        const numbered = sentences.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s.trim()}`);
-        return (formattedTitle ? `${formattedTitle}\n\n` : '') + numbered.join("\n\n\n");
-      }).join("\n\n---\n\n");
-      document.getElementById("outputArea").innerText = result.trim();
-    }
-
-    // 순서 배열
-    function generateAllOrderQuestions() {
-      hideExplanationCheckbox();
-
-      const format = document.getElementById("formatSelect").value;
-      const titleFormat = document.getElementById("titleFormatSelect").value;
-      const passages = getPassages();
-      let result = passages.map(({ title, body }) => {
-        const formattedTitle = getFormattedTitle(title, titleFormat);
-        const sentences = extractSentences(body).map(s => s.trim());
-        if (sentences.length < 2) return `${formattedTitle}\n두 문장 이상 입력해야 합니다.`;
-
-        const shuffled = [...sentences].sort(() => Math.random() - 0.5);
-        const question = shuffled.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s}`).join("\n\n");
-        const answerOrder = sentences.map(original => getNumberingPrefix(format, shuffled.indexOf(original) + 1).trim());
-        return `${formattedTitle}\n\n${question}\n\n정답: ${answerOrder.join(" → ")}`;
-      }).join("\n\n---\n\n");
-      document.getElementById("outputArea").innerText = result.trim();
-    }
-
-    // 어순배열
-    function generateAllWordShuffles() {
-      showExplanationCheckbox(); 
-
-      const passages = getPassages();
-      let result = "";
-      let questionCount = 1;
-
-      const showExplanations = document.getElementById("showExplanations").checked;
-      const numberingFormat = document.getElementById("formatSelect").value;
-
-      passages.forEach(({ title, body }) => {
-        const explanations = extractSentences(title);
-        const sentences = extractSentences(body);
+    <script>
+        let currentFunction = '';
+        const homeScreen = document.getElementById('home');
+        const workspaceScreen = document.getElementById('workspace');
         
-      if (explanations.length !== sentences.length) {
-        result += `❗ 해설문과 영어 문장의 개수가 일치하지 않습니다❗ \n\n`;
-        return;
-      }
-        const processedSentences = sentences.map((sentence, idx) => {
-          const explanation = explanations[idx] ? explanations[idx].trim() : sentence.trim();
-          const words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
+        const functionSettings = {
+            split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
+            sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
+            wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
+            chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: "자동으로 구문을 나눌 영어 문장을 한 줄씩 입력하세요.", canIncludeExplanations: true }
+        };
 
-          if (words.length > 0) {
-            words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1);
-          }
+        function switchScreen(show, hide) {
+            hide.classList.add('hidden');
+            setTimeout(() => { show.classList.remove('hidden'); }, 50);
+        }
 
-          const shuffled = [...words].sort(() => Math.random() - 0.5);
-          const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+        function showWorkspace(func) {
+            currentFunction = func;
+            const settings = functionSettings[func];
+            switchScreen(workspaceScreen, homeScreen);
+            document.getElementById('workspaceTitle').innerText = settings.title;
+            const explanationWrapper = document.getElementById('includeExplanationsWrapper');
+            explanationWrapper.classList.toggle('hidden', !settings.canIncludeExplanations);
+            explanationWrapper.classList.toggle('flex', settings.canIncludeExplanations);
 
+            if (settings.canIncludeExplanations) {
+            const checkbox = document.getElementById('includeExplanations');
+            checkbox.checked = false;
+            checkbox.dispatchEvent(new Event('change'));
 
-          if (showExplanations) {
-            return `${numbering}${explanation}\n[ ${shuffled.join(" / ")} ]\n\n→\n\n`;
-          } else {
-            return `${numbering}[ ${shuffled.join(" / ")} ]\n\n→\n\n`;
-          }
-        }).join("\n");
+            // ✅ 여기서 라벨 텍스트 설정
+            document.getElementById('includeExplanationLabel').innerText =
+                (func === 'split' || func === 'sequence') ? '제목 포함하기' : '해설 포함하기';
+            }
+            
+            document.getElementById('passagesContainer').innerHTML = '';
+            addPassage();
+            document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
+        }
 
-        result += processedSentences + '\n';
-      });
+        function goToHome() {
+            switchScreen(homeScreen, workspaceScreen);
+            currentFunction = '';
+        }
+        
+        function createPassageElement() {
+            const settings = functionSettings[currentFunction] || {};
+            const passageGroup = document.createElement('div');
+            passageGroup.className = 'passage-group-card space-y-3 animate-fade-in';
+            
+            const explanationIsVisible = settings.canIncludeExplanations && document.getElementById('includeExplanations').checked;
 
-      document.getElementById("outputArea").innerText = result.trim();
+            const titleInputHTML = `
+                <textarea class="title-input w-full text-sm resize-y input-base ${settings.canIncludeExplanations && !explanationIsVisible ? 'hidden' : ''}" placeholder="${settings.titlePlaceholder}" rows="1"></textarea>
+            `;
+            const bodyInputHTML = `
+                <textarea class="body-input w-full text-sm resize-y input-base" placeholder="${settings.bodyPlaceholder}" rows="7"></textarea>
+            `;
+
+            // 어순/구문 배열일 때만 해설(title) 입력란을 표시
+            passageGroup.innerHTML = (settings.canIncludeExplanations ? titleInputHTML : '') + bodyInputHTML;
+            return passageGroup;
+        }
+
+        function addPassage() {
+            const container = document.getElementById('passagesContainer');
+            const newPassage = createPassageElement();
+            container.appendChild(newPassage);
+            updatePassageCount();
+            newPassage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function removePassage() {
+            const container = document.getElementById('passagesContainer');
+            if (container.children.length > 1) {
+                const lastChild = container.lastChild;
+                lastChild.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => {
+                    container.removeChild(lastChild);
+                    updatePassageCount();
+                }, 300);
+            }
+        }
+        
+        function updatePassageCount() {
+            document.getElementById('passageCount').innerText = document.querySelectorAll('.passage-group-card').length;
+        }
+
+        function getPassages() {
+            return Array.from(document.querySelectorAll('.passage-group-card')).map(group => {
+                const titleInput = group.querySelector('.title-input');
+                const bodyInput = group.querySelector('.body-input');
+                return {
+                    title: titleInput ? titleInput.value.trim() : '',
+                    body: bodyInput ? bodyInput.value.trim() : '',
+                };
+            }).filter(p => p.body);
+        }
+
+        function generateResult() {
+            if (!currentFunction) return;
+            switch(currentFunction) {
+                case 'split': splitSentences(); break;
+                case 'sequence': generateSequenceQuestion(); break;
+                case 'wordOrder': generateWordOrderQuestion(); break;
+                case 'chunkOrder': generateChunkOrderQuestion(); break;
+            }
+        }
+
+        function extractSentences(text) {
+    const sentences = [];
+    let i = 0;
+    const len = text.length;
+
+    while (i < len) {
+        let start = i;
+
+        // 따옴표 시작 여부 확인
+        if (text[i] === '"') {
+            i++; // 시작 따옴표 넘김
+            while (i < len && text[i] !== '"') i++; // 끝 따옴표까지
+
+            if (i < len) i++; // 닫는 따옴표 포함
+
+            // 인용 끝난 뒤 화자 태그까지 포함
+            while (i < len && /[ \w,’“,\"-]/.test(text[i])) i++;
+
+            if (i < len && /[.!?]/.test(text[i])) i++; // 문장부호 포함
+
+            sentences.push(text.slice(start, i).trim());
+        } else {
+            // 따옴표가 없는 일반 문장
+            while (i < len) {
+                // 문장 중간 인용부호는 무시
+                if (text[i] === '"') {
+                    i++;
+                    while (i < len && text[i] !== '"') i++;
+                    if (i < len) i++;
+                    continue;
+                }
+
+                if (/[.!?]/.test(text[i])) {
+                    i++;
+                    break;
+                }
+                i++;
+            }
+
+            const sentence = text.slice(start, i).trim();
+            if (sentence) sentences.push(sentence);
+        }
     }
 
-    function copyResult() {
-      const output = document.getElementById("outputArea").innerText;
-      if (output) {
-        navigator.clipboard.writeText(output).then(() => {
-          const message = document.getElementById("copyMessage");
-          message.classList.add("show");
-          setTimeout(() => message.classList.remove("show"), 2000);
+    return sentences;
+}
+
+
+        function getNumberingPrefix(format, num) {
+            const circles = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
+            switch(format) {
+                case "(1)": return `(${num}) `;
+                case "1.": return `${num}. `;
+                case "①": return (num > 0 && num <= 20 ? circles[num-1] : `(${num})`) + ' ';
+                case "(A)": return `(${(String.fromCharCode(64 + num))}) `;
+                default: return `(${num}) `;
+            }
+        }
+
+        function getFormattedTitle(title, format) {
+            if (!title) return '';
+            const formats = { " ": title, "[ ]": `[${title}]`, "( )": `(${title})`, "< >": `<${title}>` };
+            return (formats[format] || title) + '\n\n';
+        }
+        
+        function splitSentences() {
+            const format = document.getElementById('formatSelect').value;
+            const titleFormat = document.getElementById('titleFormatSelect').value;
+            const passages = getPassages();
+            const result = passages.map(({ title, body }) => {
+                const formattedTitle = getFormattedTitle(title, titleFormat);
+                const sentences = extractSentences(body);
+                const numbered = sentences.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s.trim()}`).join('\n\n\n');
+                return formattedTitle + numbered;
+            }).join('\n\n🟪\n\n');
+            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+        }
+
+        function generateSequenceQuestion() {
+            const titleFormat = document.getElementById('titleFormatSelect').value;
+            const numberingFormat = document.getElementById('formatSelect').value; // 2. 번호 서식 가져오기
+            const passages = getPassages();
+            const result = passages.map(({ title, body }) => {
+                const formattedTitle = getFormattedTitle(title, titleFormat);
+                const sentences = extractSentences(body).map(s => s.trim());
+                if (sentences.length < 2) return `${formattedTitle}두 문장 이상 입력해야 합니다.`;
+                
+                const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+                // 2. 선택된 번호 서식으로 문제 생성
+                const question = shuffled.map((s, i) => `${getNumberingPrefix(numberingFormat, i + 1)}${s}`).join('\n\n');
+                // 2. 정답 순서에도 동일한 서식 적용 후, 기호 제거
+                const answerOrder = sentences.map(original => 
+                    getNumberingPrefix(numberingFormat, shuffled.indexOf(original) + 1).trim().replace(/[().\s]/g, '')
+                );
+
+                return `${formattedTitle}${question}\n\n정답: ${answerOrder.join(" → ")}`;
+            }).join('\n\n🟪\n\n');
+            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+        }
+
+        function generateWordOrderQuestion() {
+            const passages = getPassages();
+            const numberingFormat = document.getElementById('formatSelect').value;
+            const includeExplanations = document.getElementById('includeExplanations').checked;
+            let questionCount = 1;
+
+            const result = passages.map(({ title, body }) => {
+                const sentences = extractSentences(body);
+                let explanations = [];
+                // '해설 포함'이 체크된 경우에만 해설을 문장 단위로 추출
+                if (includeExplanations && title) {
+                    explanations = extractSentences(title); // 3. 해설을 문장 단위로 카운트
+                }
+
+                if (includeExplanations && title && explanations.length !== sentences.length) {
+                    return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
+                }
+
+                return sentences.map((sentence, idx) => {
+                    const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
+                    let words = sentence.trim().replace(/[.,?!]$/, "").split(/\s+/).filter(Boolean);
+                    if (words.length > 0) { words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1); }
+                    const shuffled = [...words].sort(() => Math.random() - 0.5);
+                    const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+                    return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
+                }).join('\n\n');
+            }).join('\n\n🟪\n\n');
+            document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+        }
+
+        function generateChunkOrderQuestion() {
+            // 0. 라이브러리 확인
+            if (typeof nlp === 'undefined') {
+                document.getElementById('outputArea').innerText =
+                    '오류: 구문 분석 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.';
+                return;
+            }
+
+            const passages           = getPassages();
+            const numberingFormat    = document.getElementById('formatSelect').value;
+            const includeExplanations = document.getElementById('includeExplanations').checked;
+            let   questionCount      = 1;
+
+            const result = passages.map(({ title, body }) => {
+                /* ✅ 1) 지문을 문장 단위로 분리 */
+                const sentences = extractSentences(body);          // 🔄 여기만 바꾸면 됩니다
+
+                /* ✅ 2) (옵션) 해설도 문장 단위로 분리 */
+                let explanations = [];
+                if (includeExplanations && title) {
+                    explanations = extractSentences(title);
+                }
+
+                /* ✅ 3) 문장·해설 개수 불일치 검사 */
+                if (includeExplanations && title && explanations.length !== sentences.length) {
+                    return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
+                }
+
+                /* ✅ 4) 각 문장마다 문제 생성 */
+                return sentences.map((sentence, idx) => {
+                    const explanation = (includeExplanations && explanations[idx])
+                        ? `${explanations[idx].trim()}\n`
+                        : '';
+
+                    const originalSentence = sentence.trim();
+
+                    // 4‑a. Compromise로 의미 단위(chunk) 추출
+                    const doc    = nlp(originalSentence);
+                    let   chunks = doc.chunks().out('array');
+
+                    // 4‑b. chunk가 1개 이하면 단어 단위로 fallback
+                    if (chunks.length <= 1) {
+                        chunks = originalSentence.replace(/[.,?!]$/, '').split(/\s+/);
+                    }
+
+                    // 4‑c. 무작위 섞기
+                    const shuffled  = [...chunks].sort(() => Math.random() - 0.5);
+                    const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+
+                    return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
+                }).join('\n\n');   // ← 문장별로 한 줄씩 구분
+            }).join('\n\n🟪\n\n'); // ← 지문 단위 구분선
+
+            document.getElementById('outputArea').innerText =
+                result.trim() || '생성할 내용이 없습니다.';
+        }
+
+
+        function copyResult() {
+            const output = document.getElementById('outputArea').innerText;
+            if (output && output !== '여기에 결과가 표시됩니다...') {
+                navigator.clipboard.writeText(output).then(() => {
+                    const message = document.getElementById('copyMessage');
+                    message.classList.remove('opacity-0', 'translate-y-4');
+                    message.classList.add('opacity-100', 'translate-y-0');
+                    setTimeout(() => {
+                        message.classList.remove('opacity-100', 'translate-y-0');
+                        message.classList.add('opacity-0', 'translate-y-4');
+                    }, 2000);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             workspaceScreen.classList.add('hidden');
+             // 1. '해설 포함' 체크박스 이벤트 리스너 추가
+             document.getElementById('includeExplanations').addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                document.querySelectorAll('.passage-group-card').forEach(card => {
+                    const titleInput = card.querySelector('.title-input');
+                    if (titleInput) {
+                        titleInput.classList.toggle('hidden', !isChecked);
+                    }
+                });
+             });
         });
-      }
-    }
-    document.addEventListener('input', function (event) {
-      if (event.target.classList.contains('auto-expand')) {
-        event.target.style.height = 'auto';
-        event.target.style.height = (event.target.scrollHeight) + 'px';
-      }
-    });
-    document.addEventListener("DOMContentLoaded", updatePassageCount);
-
-    function openGuideModal() {
-      document.getElementById('guideModal').classList.remove('hidden');
-    }
-    function openGuideModal2() {
-      document.getElementById('guideModal2').classList.remove('hidden');
-    }
-
-    function toggleShowExplanations() {
-      const wrapper = document.getElementById("showExplanationsWrapper");
-      if (wrapper.style.display === "none" || wrapper.style.display === "") {
-        wrapper.style.display = "block";
-      } else {
-        wrapper.style.display = "none";
-      }
-    }
-
-    // 체크박스 상태 변경 시 바로 결과 갱신
-    document.getElementById("showExplanations").addEventListener("change", () => {
-      generateAllWordShuffles();
-    });
-
-    // 체크박스 보이기
-    function showExplanationCheckbox() {
-      document.getElementById("showExplanationsWrapper").style.display = "block";
-    }
-
-    // 체크박스 숨기기
-    function hideExplanationCheckbox() {
-      document.getElementById("showExplanationsWrapper").style.display = "none";
-    }
-
-    function closeGuideModal() {
-      document.getElementById('guideModal').classList.add('hidden');
-      document.getElementById('guideModal2').classList.add('hidden');
-    }
-  </script>
-  <!-- 사용 설명서 모달 -->
-  <div id="guideModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-xl max-w-2xl w-full p-6 relative shadow-xl">
-      <h3 class="text-lg font-bold mb-4 text-slate-800">사용 설명서</h3>
-      <div class="text-sm leading-relaxed text-slate-600 space-y-3 max-h-[90vh] overflow-y-auto">
-        <p><strong> 💡 영어 / 한글</strong> 모든 글에 활용 가능 (영작, 해석 연습 제작)</li>
-        <!-- <p>1. <span class="font-bold">문장 나누기</span>는 글을 문장 단위로 자동 분리해 줍니다.</p>
-        <p>2. <span class="font-bold">순서 배열</span>은 문장 순서를 섞고 정답을 제공합니다.</p>
-        <p>3. <span class="font-bold">어순 배열</span>은 단어 순서를 섞고 정답을 제공합니다.</p> -->
-        <p>1. <span class="font-bold">넘버링 스타일</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">(1)   1.   ①   (A) </p>
-        <p>2. <span class="font-bold">제목 스타일</span>을 선택할 수 있습니다. <span class="font-bold text-teal-700">제목   [제목]   (제목)   제목</p>
-        <p>3. <span class="font-bold">각 문장은 반드시</span> <strong class="text-teal-700">마침표(.) 물음표(?) 느낌표(!)</strong>로 끝나야 합니다.</p>
-        <p>4. <span class="font-bold">제목 출력이 필요 없다면,</span> 제목 입력 X</p>
-        <p>5. <span class="font-bold">삭제해야 할 지문이 중간에 있다면,</span> 내용 지우기</p>
-      </div>
-      <button onclick="closeGuideModal()" class="absolute top-2 right-3 text-slate-500 hover:text-slate-800 text-xl font-bold">&times;</button>
-    </div>
-  </div>
-
-  <!-- 샘플 데이터 모달 -->
-<div id="guideModal2" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
-  <div class="bg-white rounded-xl max-w-3xl w-full p-6 relative shadow-xl max-h-[80vh] overflow-y-auto">
-    <h3 class="text-lg font-bold mb-4 text-slate-800">샘플 데이터 및 예시</h3>
-
-    <div class="text-sm leading-relaxed text-slate-600 space-y-6">
-
-      <!-- 제목/지문/해설 입력 예시 -->
-      <div>
-        <p class="font-bold text-slate-700">✏️ 샘플 데이터</p>
-        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
-제목 예시:
-3강 4번
-
-지문 예시:
-Nathan boarded the train on Saturday evening. As he made his way to his seat, he found someone already sitting there. Confused, he checked his ticket and realized his mistake. It was for Sunday, not Saturday! A flush of panic spread across his face. He quickly approached a train attendant and explained the situation. 
-
-해설 예시:
-Nathan은 토요일 저녁에 기차에 탑승했다. 자신의 좌석으로 가던 중, 그는 이미 누군가가 그 자리에 앉아 있는 것을 발견했다. 혼란스러워하며 그는 자신의 표를 확인했고, 자신의 실수를 깨달았다. 토요일이 아니라 일요일 표였던 것이다! 당황한 기색이 그의 얼굴에 번졌다. 그는 재빨리 기차 승무원에게 다가가 상황을 설명했다.</div>
-
-      <!-- 문장 나누기 결과 -->
-      <div>
-        <p class="font-bold text-slate-700">🍀 문장 나누기 예시</p>
-        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
-(1) Nathan boarded the train on Saturday evening.
-
-(2) As he made his way to his seat, he found someone already sitting there.
-
-(3) Confused, he checked his ticket and realized his mistake.
-.
-.
-</pre>
-      </div>
-
-      <!-- 순서 배열 결과 -->
-      <div>
-        <p class="font-bold text-slate-700">🍀 순서 배열 예시</p>
-        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
-(A) Confused, he checked his ticket and realized his mistake.
-
-(B) Nathan boarded the train on Saturday evening.
-
-(C) As he made his way to his seat, he found someone already sitting there.
-.
-.
-
-정답: (B) → (C) → (A) . .
-</pre>
-      </div>
-
-      <!-- 어순 배열 결과 -->
-      <div>
-        <p class="font-bold text-slate-700">🍀 어순 배열 예시 (제목란에 해설 입력 시)</p>
-        <pre class="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
-(A) Nathan은 토요일 저녁에 기차에 탑승했다.
-[ Saturday / boarded / the / train / nathan / on / evening ]
-
-→
-
-(B) 자신의 좌석으로 가던 중, 그는 이미 누군가가 그 자리에 앉아 있는 것을 발견했다.
-[ as / found / someone / he / sitting / made / his / way / to / his / he / already / seat, / there ]
-
-→
-
-(C) 혼란스러워하며 그는 자신의 표를 확인했고, 자신의 실수를 깨달았다.
-[ ticket / he / and / checked / confused, / his / realized / mistake / his ]
-
-→
-.
-.
-</pre>
-      </div>
-
-    </div>
-
-    <button onclick="closeGuideModal()" class="absolute top-2 right-3 text-slate-500 hover:text-slate-800 text-xl font-bold">&times;</button>
-  </div>
-</div>
-
-  </div>
-
-</div>
-
+    </script>
 </body>
 </html>
-
-
-
