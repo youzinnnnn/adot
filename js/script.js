@@ -92,7 +92,6 @@ function getPassages() {
         const titleInput = group.querySelector('.title-input');
         const bodyInput = group.querySelector('.body-input');
         return {
-            // 체크박스가 선택되었을 때만 titleInput의 값을 사용하고, 그렇지 않으면 빈 문자열을 반환합니다.
             title: (titleInput && includeExplanationsChecked) ? titleInput.value.trim() : '',
             body: bodyInput ? bodyInput.value.trim() : '',
         };
@@ -217,10 +216,9 @@ function generateWordOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            // 문장 끝 문장부호(.) 제거, 쉼표 제거
             let cleaned = sentence.trim()
-                .replace(/[.,?!]$/, '')    // 끝의 온점, 물음표 등 제거
-                .replace(/,/g, '')        // 모든 쉼표 제거
+                .replace(/[.,?!]$/, '')   
+                .replace(/,/g, '')      
                 .trim();
 
             let words = cleaned.split(/\s+/).filter(Boolean);
@@ -261,10 +259,9 @@ function generateChunkOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            // 문장 끝 온점, 쉼표 제거
             const originalSentence = sentence.trim()
-                .replace(/[.,?!]$/, '')  // 끝 문장부호 제거
-                .replace(/,/g, '')       // 쉼표 제거
+                .replace(/[.,?!]$/, '') 
+                .replace(/,/g, '')  
                 .trim();
 
             const doc = nlp(originalSentence);
