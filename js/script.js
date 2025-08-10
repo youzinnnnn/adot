@@ -6,7 +6,7 @@ const functionSettings = {
     split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
     sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
     wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: "자동으로 구문을 나눌 영어 문장을 한 줄씩 입력하세요.", canIncludeExplanations: true }
+    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true }
 };
 
 function switchScreen(show, hide) {
@@ -227,7 +227,7 @@ function generateWordOrderQuestion() {
             }
             const shuffled = [...words].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
-            return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
+            return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
 
@@ -274,7 +274,7 @@ function generateChunkOrderQuestion() {
             const shuffled = [...chunks].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
 
-            return `${numbering}${explanation}[ ${shuffled.join(' / ')} ]\n\n→\n\n`;
+            return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
 
