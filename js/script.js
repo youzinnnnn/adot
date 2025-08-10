@@ -85,9 +85,7 @@ function updatePassageCount() {
 }
 
 function getPassages() {
-    // 체크박스의 현재 상태를 가져옵니다.
     const includeExplanationsChecked = document.getElementById('includeExplanations').checked;
-
     return Array.from(document.querySelectorAll('.passage-group-card')).map(group => {
         const titleInput = group.querySelector('.title-input');
         const bodyInput = group.querySelector('.body-input');
@@ -98,58 +96,94 @@ function getPassages() {
     }).filter(p => p.body);
 }
 
+function getFormatOptions() {
+    const isDesktop = window.innerWidth >= 1024;
+    
+    const formatSelectId = isDesktop ? 'formatSelect' : 'formatSelectMobile';
+    const titleFormatSelectId = isDesktop ? 'titleFormatSelect' : 'titleFormatSelectMobile';
+
+    const formatValue = document.querySelector(`#${formatSelectId} .format-btn.active`).dataset.value;
+    const titleFormatValue = document.querySelector(`#${titleFormatSelectId} .format-btn.active`).dataset.value;
+    
+    return {
+        format: formatValue,
+        titleFormat: titleFormatValue
+    };
+}
+
+function setupFormatButtons() {
+    const buttonGroups = document.querySelectorAll('#formatSelect, #titleFormatSelect, #formatSelectMobile, #titleFormatSelectMobile');
+    
+    buttonGroups.forEach(group => {
+        group.addEventListener('click', (e) => {
+            if (e.target.classList.contains('format-btn')) {
+                group.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                if (e.target.closest('#fab-options-menu')) {
+                    document.activeElement.blur();
+                }
+            }
+        });
+    });
+}
+
 function generateResult() {
     if (!currentFunction) return;
+    const { format, titleFormat } = getFormatOptions();
     switch(currentFunction) {
-        case 'split': splitSentences(); break;
-        case 'sequence': generateSequenceQuestion(); break;
-        case 'wordOrder': generateWordOrderQuestion(); break;
-        case 'chunkOrder': generateChunkOrderQuestion(); break;
+        case 'split': splitSentences(format, titleFormat); break;
+        case 'sequence': generateSequenceQuestion(format, titleFormat); break;
+        case 'wordOrder': generateWordOrderQuestion(format); break;
+        case 'chunkOrder': generateChunkOrderQuestion(format); break;
     }
 }
-
 function extractSentences(text) {
-const sentences = [];
-let i = 0;
-const len = text.length;
+    const sentences = [];
+    let i = 0;
+    const len = text.length;
 
-while (i < len) {
-    let start = i;
-    if (text[i] === '"') {
-        i++; 
-        while (i < len && text[i] !== '"') i++;
-        if (i < len) i++; 
-        while (i < len && /[ \w,’“,\"-]/.test(text[i])) i++;
-        if (i < len && /[.!?]/.test(text[i])) i++;
-        sentences.push(text.slice(start, i).trim());
-    } else {
-        while (i < len) {
-            if (text[i] === '"') {
+    while (i < len) {
+        let start = i;
+        if (text[i] === '"') {
+            i++; 
+            while (i < len && text[i] !== '"') i++;
+            if (i < len) i++; 
+            while (i < len && /[ \w,’“,"-]/.test(text[i])) i++;
+            if (i < len && /[.!?]/.test(text[i])) i++;
+            sentences.push(text.slice(start, i).trim());
+        } else {
+            while (i < len) {
+                if (text[i] === '"') {
+                    i++;
+                    while (i < len && text[i] !== '"') i++;
+                    if (i < len) i++;
+                    continue;
+                }
+                if (/[.!?]/.test(text[i])) {
+                    i++;
+                    break;
+                }
                 i++;
-                while (i < len && text[i] !== '"') i++;
-                if (i < len) i++;
-                continue;
             }
-            if (/[.!?]/.test(text[i])) {
-                i++;
-                break;
-            }
-            i++;
+            const sentence = text.slice(start, i).trim();
+            if (sentence) sentences.push(sentence);
         }
-        const sentence = text.slice(start, i).trim();
-        if (sentence) sentences.push(sentence);
     }
+    return sentences;
 }
-return sentences;
-}
-
 
 function getNumberingPrefix(format, num) {
-    const circles = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳'];
+    const circles = [
+        '①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩',
+        '⑪','⑫','⑬','⑭','⑮','⑯','⑰','⑱','⑲','⑳',
+        '㉑','㉒','㉓','㉔','㉕','㉖','㉗','㉘','㉙','㉚',
+        '㉛','㉜','㉝','㉞','㉟','㊱','㊲','㊳','㊴','㊵',
+        '㊶','㊷','㊸','㊹','㊺','㊻','㊼','㊽','㊾','㊿'
+    ];
     switch(format) {
         case "(1)": return `(${num}) `;
         case "1.": return `${num}. `;
-        case "①": return (num > 0 && num <= 20 ? circles[num-1] : `(${num})`) + ' ';
+        case "①": return (num > 0 && num <= 50 ? circles[num-1] : `(${num})`) + ' ';
         case "(A)": return `(${(String.fromCharCode(64 + num))}) `;
         default: return `(${num}) `;
     }
@@ -161,10 +195,7 @@ function getFormattedTitle(title, format) {
     return (formats[format] || title) + '\n\n';
 }
 
-// 넘버링
-function splitSentences() {
-    const format = document.getElementById('formatSelect').value;
-    const titleFormat = document.getElementById('titleFormatSelect').value;
+function splitSentences(format, titleFormat) {
     const passages = getPassages();
     const result = passages.map(({ title, body }) => {
         const formattedTitle = getFormattedTitle(title, titleFormat);
@@ -175,10 +206,7 @@ function splitSentences() {
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
-// 순서배열
-function generateSequenceQuestion() {
-    const titleFormat = document.getElementById('titleFormatSelect').value;
-    const numberingFormat = document.getElementById('formatSelect').value;
+function generateSequenceQuestion(numberingFormat, titleFormat) {
     const passages = getPassages();
     const result = passages.map(({ title, body }) => {
         const formattedTitle = getFormattedTitle(title, titleFormat);
@@ -196,10 +224,8 @@ function generateSequenceQuestion() {
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
-// 어순배열
-function generateWordOrderQuestion() {
+function generateWordOrderQuestion(numberingFormat) {
     const passages = getPassages();
-    const numberingFormat = document.getElementById('formatSelect').value;
     const includeExplanations = document.getElementById('includeExplanations').checked;
     let questionCount = 1;
 
@@ -216,11 +242,7 @@ function generateWordOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            let cleaned = sentence.trim()
-                .replace(/[.,?!]$/, '')   
-                .replace(/,/g, '')      
-                .trim();
-
+            let cleaned = sentence.trim().replace(/[.,?!]$/, '').replace(/,/g, '').trim();
             let words = cleaned.split(/\s+/).filter(Boolean);
             if (words.length > 0) {
                 words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1);
@@ -230,19 +252,16 @@ function generateWordOrderQuestion() {
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
-
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
 
-// 구문배열
-function generateChunkOrderQuestion() {
+function generateChunkOrderQuestion(numberingFormat) {
     if (typeof nlp === 'undefined') {
         document.getElementById('outputArea').innerText = '오류: 구문 분석 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.';
         return;
     }
 
     const passages = getPassages();
-    const numberingFormat = document.getElementById('formatSelect').value;
     const includeExplanations = document.getElementById('includeExplanations').checked;
     let questionCount = 1;
 
@@ -259,28 +278,19 @@ function generateChunkOrderQuestion() {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            const originalSentence = sentence.trim()
-                .replace(/[.,?!]$/, '') 
-                .replace(/,/g, '')  
-                .trim();
-
+            const originalSentence = sentence.trim().replace(/[.,?!]$/, '').replace(/,/g, '').trim();
             const doc = nlp(originalSentence);
             let chunks = doc.chunks().out('array');
-
             if (chunks.length <= 1) {
                 chunks = originalSentence.split(/\s+/);
             }
-
             const shuffled = [...chunks].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
-
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
-
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
-
 
 function copyResult() {
     const output = document.getElementById('outputArea').innerText;
@@ -307,33 +317,27 @@ function switchTab(evt, tabName) {
 }
 
 const guideModal = document.getElementById('guide-modal');
-function openGuideModal() {
-    guideModal.classList.remove('hidden');
-}
-function closeGuideModal() {
-    guideModal.classList.add('hidden');
-}
+function openGuideModal() { guideModal.classList.remove('hidden'); }
+function closeGuideModal() { guideModal.classList.add('hidden'); }
 
 document.addEventListener('DOMContentLoaded', () => {
-        workspaceScreen.classList.add('hidden');
-        document.getElementById('includeExplanations').addEventListener('change', (e) => {
-            const isChecked = e.target.checked;
-            document.querySelectorAll('.passage-group-card').forEach(card => {
-                const titleInput = card.querySelector('.title-input');
-                if (titleInput) {
-                    titleInput.classList.toggle('hidden', !isChecked);
-                }
-            });
+    workspaceScreen.classList.add('hidden');
+    document.getElementById('includeExplanations').addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        document.querySelectorAll('.passage-group-card').forEach(card => {
+            const titleInput = card.querySelector('.title-input');
+            if (titleInput) {
+                titleInput.classList.toggle('hidden', !isChecked);
+            }
         });
+    });
+    
+    setupFormatButtons();
 
     guideModal.addEventListener('click', (event) => {
-        if (event.target === guideModal) {
-            closeGuideModal();
-        }
+        if (event.target === guideModal) closeGuideModal();
     });
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && !guideModal.classList.contains('hidden')) {
-            closeGuideModal();
-        }
+        if (event.key === 'Escape' && !guideModal.classList.contains('hidden')) closeGuideModal();
     });
 });
