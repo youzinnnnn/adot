@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>뚝딱 워크북</title>
+    <title>워크북 MAKER</title>
 
     <link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
@@ -19,6 +19,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* 기본 상태: 메뉴 숨김 */
+        #fab-options-menu {
+            transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+            opacity: 0;
+            transform: translateY(1rem);
+            visibility: hidden; /* 완전히 숨겨서 상호작용 방지 */
+            pointer-events: none;
+        }
+        /* 'open' 클래스가 추가되었을 때: 메뉴 보임 */
+        #fab-options-menu.open {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+    </style>
 </head>
 <body class="w-full min-h-screen bg-gray-50 overflow-x-hidden">
 
@@ -102,7 +120,7 @@
                                     <button data-value="(A)" class="format-btn"> (A) </button>
                                 </div>
                             </div>
-                            <div class="flex items-center">
+                            <div id="titleFormatWrapperDesktop" class="items-center hidden">
                                 <span class="text-sm font-medium text-gray-600 mr-2">제목:</span>
                                 <div id="titleFormatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
                                     <button data-value=" " class="format-btn active"> 기본 </button>
@@ -117,9 +135,9 @@
                 </div>
             </div>
 
-            <div class="group lg:hidden fixed z-30 flex flex-col items-center fab-container">
-                <div id="fab-options-menu" class="flex flex-col items-center mb-3 transition-all duration-300 opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
-                    <div class="p-3 bg-white rounded-lg shadow-lg mb-3">
+            <div class="lg:hidden fixed z-30 flex flex-col items-center fab-container">
+                <div id="fab-options-menu" class="flex flex-col items-center w-full mb-3">
+                    <div class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full">
                         <span class="text-sm font-medium text-gray-600 mb-2 block text-center">번호 스타일</span>
                         <div id="formatSelectMobile" class="flex items-center bg-gray-100 rounded-lg p-0.5">
                             <button data-value="(1)" class="format-btn active"> (1) </button>
@@ -128,7 +146,7 @@
                             <button data-value="(A)" class="format-btn"> (A) </button>
                         </div>
                     </div>
-                    <div class="p-3 bg-white rounded-lg shadow-lg">
+                    <div id="titleFormatWrapperMobile" class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full hidden">
                         <span class="text-sm font-medium text-gray-600 mb-2 block text-center">제목 스타일</span>
                         <div id="titleFormatSelectMobile" class="flex items-center bg-gray-100 rounded-lg p-0.5">
                             <button data-value=" " class="format-btn active"> 기본 </button>
@@ -137,8 +155,11 @@
                             <button data-value="< >" class="format-btn"> &lt; &gt; </button>
                         </div>
                     </div>
+                    <button onclick="generateResult()" class="btn btn-primary w-full text-base py-3 shadow-lg">
+                        ✨ 생성하기
+                    </button>
                 </div>
-                <button onclick="generateResult()" class="btn btn-primary rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
+                <button onclick="toggleFabMenu()" class="btn btn-primary rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
                     <span class="text-2xl">✨</span>
                     <span class="text-xs font-bold">생성</span>
                 </button>
