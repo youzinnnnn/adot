@@ -3,11 +3,25 @@ const homeScreen = document.getElementById('home');
 const workspaceScreen = document.getElementById('workspace');
 
 const functionSettings = {
-    split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-    sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-    wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true },
-    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true }
+    split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
+    sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
+    wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false },
+    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false }
 };
+
+// 제목 스타일 옵션의 표시 여부를 관리하는 함수
+function updateTitleStyleVisibility() {
+    const settings = functionSettings[currentFunction];
+    const isChecked = document.getElementById('includeExplanations').checked;
+    const shouldShow = settings && settings.hasTitleStyle && isChecked;
+
+    // 데스크톱용 제목 스타일
+    document.getElementById('titleFormatWrapperDesktop').classList.toggle('hidden', !shouldShow);
+    document.getElementById('titleFormatWrapperDesktop').classList.toggle('flex', shouldShow);
+    
+    // 모바일용 제목 스타일
+    document.getElementById('titleFormatWrapperMobile').classList.toggle('hidden', !shouldShow);
+}
 
 function switchScreen(show, hide) {
     hide.classList.add('hidden');
@@ -24,17 +38,20 @@ function showWorkspace(func) {
     explanationWrapper.classList.toggle('flex', settings.canIncludeExplanations);
 
     if (settings.canIncludeExplanations) {
-    const checkbox = document.getElementById('includeExplanations');
-    checkbox.checked = false;
-    checkbox.dispatchEvent(new Event('change'));
+        const checkbox = document.getElementById('includeExplanations');
+        checkbox.checked = false;
+        checkbox.dispatchEvent(new Event('change'));
 
-    document.getElementById('includeExplanationLabel').innerText =
-        (func === 'split' || func === 'sequence') ? '제목 포함하기' : '해설 포함하기';
+        document.getElementById('includeExplanationLabel').innerText =
+            (func === 'split' || func === 'sequence') ? '제목 포함하기' : '해설 포함하기';
     }
     
     document.getElementById('passagesContainer').innerHTML = '';
     addPassage();
     document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
+    
+    // 워크스페이스에 들어올 때 제목 스타일 가시성 초기화
+    updateTitleStyleVisibility();
 }
 
 function goToHome() {
@@ -103,7 +120,13 @@ function getFormatOptions() {
     const titleFormatSelectId = isDesktop ? 'titleFormatSelect' : 'titleFormatSelectMobile';
 
     const formatValue = document.querySelector(`#${formatSelectId} .format-btn.active`).dataset.value;
-    const titleFormatValue = document.querySelector(`#${titleFormatSelectId} .format-btn.active`).dataset.value;
+    
+    let titleFormatValue = ' '; // 기본값
+    const titleFormatWrapper = isDesktop ? document.getElementById('titleFormatWrapperDesktop') : document.getElementById('titleFormatWrapperMobile');
+    if (!titleFormatWrapper.classList.contains('hidden')) {
+        const activeTitleBtn = document.querySelector(`#${titleFormatSelectId} .format-btn.active`);
+        if(activeTitleBtn) titleFormatValue = activeTitleBtn.dataset.value;
+    }
     
     return {
         format: formatValue,
@@ -119,9 +142,6 @@ function setupFormatButtons() {
             if (e.target.classList.contains('format-btn')) {
                 group.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-                if (e.target.closest('#fab-options-menu')) {
-                    document.activeElement.blur();
-                }
             }
         });
     });
@@ -136,12 +156,23 @@ function generateResult() {
         case 'wordOrder': generateWordOrderQuestion(format); break;
         case 'chunkOrder': generateChunkOrderQuestion(format); break;
     }
+    // 생성 후 모바일 메뉴가 열려있으면 닫기
+    const fabMenu = document.getElementById('fab-options-menu');
+    if (fabMenu.classList.contains('open')) {
+        fabMenu.classList.remove('open');
+    }
 }
+
+// 플로팅 버튼 메뉴를 열고 닫는 함수
+function toggleFabMenu() {
+    const fabMenu = document.getElementById('fab-options-menu');
+    fabMenu.classList.toggle('open');
+}
+
 function extractSentences(text) {
     const sentences = [];
     let i = 0;
     const len = text.length;
-
     while (i < len) {
         let start = i;
         if (text[i] === '"') {
@@ -330,6 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleInput.classList.toggle('hidden', !isChecked);
             }
         });
+        // 제목 스타일 옵션 표시 여부 업데이트
+        updateTitleStyleVisibility();
     });
     
     setupFormatButtons();
@@ -339,5 +372,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && !guideModal.classList.contains('hidden')) closeGuideModal();
+    });
+
+    // 플로팅 메뉴 외부 클릭 시 닫기
+    document.addEventListener('click', function(event) {
+        const fabMenu = document.getElementById('fab-options-menu');
+        const fabButton = document.querySelector('.fab-button');
+        // 메뉴가 열려있고, 클릭된 곳이 버튼이나 메뉴 내부가 아닐 때
+        if (fabMenu.classList.contains('open') && !fabButton.contains(event.target) && !fabMenu.contains(event.target)) {
+            fabMenu.classList.remove('open');
+        }
     });
 });
