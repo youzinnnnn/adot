@@ -9,17 +9,14 @@ const functionSettings = {
     chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false }
 };
 
-// 제목 스타일 옵션의 표시 여부를 관리하는 함수
 function updateTitleStyleVisibility() {
     const settings = functionSettings[currentFunction];
     const isChecked = document.getElementById('includeExplanations').checked;
     const shouldShow = settings && settings.hasTitleStyle && isChecked;
 
-    // 데스크톱용 제목 스타일
     document.getElementById('titleFormatWrapperDesktop').classList.toggle('hidden', !shouldShow);
     document.getElementById('titleFormatWrapperDesktop').classList.toggle('flex', shouldShow);
     
-    // 모바일용 제목 스타일
     document.getElementById('titleFormatWrapperMobile').classList.toggle('hidden', !shouldShow);
 }
 
@@ -49,8 +46,6 @@ function showWorkspace(func) {
     document.getElementById('passagesContainer').innerHTML = '';
     addPassage();
     document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
-    
-    // 워크스페이스에 들어올 때 제목 스타일 가시성 초기화
     updateTitleStyleVisibility();
 }
 
@@ -156,14 +151,12 @@ function generateResult() {
         case 'wordOrder': generateWordOrderQuestion(format); break;
         case 'chunkOrder': generateChunkOrderQuestion(format); break;
     }
-    // 생성 후 모바일 메뉴가 열려있으면 닫기
     const fabMenu = document.getElementById('fab-options-menu');
     if (fabMenu.classList.contains('open')) {
         fabMenu.classList.remove('open');
     }
 }
 
-// 플로팅 버튼 메뉴를 열고 닫는 함수
 function toggleFabMenu() {
     const fabMenu = document.getElementById('fab-options-menu');
     fabMenu.classList.toggle('open');
@@ -296,6 +289,12 @@ function generateChunkOrderQuestion(numberingFormat) {
     const includeExplanations = document.getElementById('includeExplanations').checked;
     let questionCount = 1;
 
+    const mergeForwardWords = new Set([
+        'and', 'of', 'at', 'in', 'on', 'for', 'to', 'with', 'by', 'from', 'about', 'as', 'into', 'like', 'through', 'after', 'over', 'between', 'out', 'against', 'during', 'without', 'before', 'under', 'around', 'among'
+    ]);
+    const phrasalPrepositionsTwo = new Set(['due to', 'according to', 'because of', 'instead of', 'next to', 'such as', 'as for', 'in to']);
+    const phrasalPrepositionsThree = new Set(['in front of', 'in spite of', 'on behalf of', 'in addition to', 'as well as']);
+
     const result = passages.map(({ title, body }) => {
         const sentences = extractSentences(body);
         let explanations = [];
@@ -309,19 +308,69 @@ function generateChunkOrderQuestion(numberingFormat) {
 
         return sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
-            const originalSentence = sentence.trim().replace(/[.,?!]$/, '').replace(/,/g, '').trim();
+            
+            const originalSentence = sentence.trim().replace(/[.?!]$/, '').replace(/,/g, ', ').replace(/\s+/g, ' ').trim();
             const doc = nlp(originalSentence);
-            let chunks = doc.chunks().out('array');
-            if (chunks.length <= 1) {
-                chunks = originalSentence.split(/\s+/);
+            let rawChunks = doc.chunks().out('array');
+
+            if (rawChunks.length <= 1) {
+                rawChunks = originalSentence.split(/\s+/);
             }
-            const shuffled = [...chunks].sort(() => Math.random() - 0.5);
+
+            const andProcessedChunks = rawChunks.flatMap(chunk => {
+                const regex = /\s+and\s+/;
+                const match = chunk.match(regex);
+                if (match) {
+                    const index = match.index;
+                    const partBefore = chunk.substring(0, index).trim();
+                    const partAfter = chunk.substring(index).trim();
+                    const result = [];
+                    if (partBefore) result.push(partBefore);
+                    if (partAfter) result.push(partAfter);
+                    return result;
+                }
+                return [chunk];
+            }).filter(Boolean);
+            
+            const finalChunks = [];
+            let i = 0;
+            const chunks = andProcessedChunks;
+            while (i < chunks.length) {
+                if (i + 2 < chunks.length) {
+                    const phrase = `${chunks[i]} ${chunks[i+1]} ${chunks[i+2]}`.toLowerCase().replace(/,/g, '');
+                    if (phrasalPrepositionsThree.has(phrase)) {
+                        finalChunks.push(`${chunks[i]} ${chunks[i+1]} ${chunks[i+2]}`);
+                        i += 3;
+                        continue;
+                    }
+                }
+                if (i + 1 < chunks.length) {
+                    const phrase = `${chunks[i]} ${chunks[i+1]}`.toLowerCase().replace(/,/g, '');
+                    if (phrasalPrepositionsTwo.has(phrase)) {
+                        finalChunks.push(`${chunks[i]} ${chunks[i+1]}`);
+                        i += 2;
+                        continue;
+                    }
+                }
+                const currentChunkLower = chunks[i].toLowerCase().replace(/,/g, '');
+                if (mergeForwardWords.has(currentChunkLower) && i + 1 < chunks.length) {
+                    finalChunks.push(`${chunks[i]} ${chunks[i+1]}`);
+                    i += 2;
+                    continue;
+                }
+                finalChunks.push(chunks[i]);
+                i += 1;
+            }
+
+            const shuffled = [...finalChunks].sort(() => Math.random() - 0.5);
             const numbering = getNumberingPrefix(numberingFormat, questionCount++);
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
     }).join('\n\n🟪\n\n');
+    
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
 }
+
 
 function copyResult() {
     const output = document.getElementById('outputArea').innerText;
@@ -361,7 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleInput.classList.toggle('hidden', !isChecked);
             }
         });
-        // 제목 스타일 옵션 표시 여부 업데이트
         updateTitleStyleVisibility();
     });
     
@@ -374,11 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Escape' && !guideModal.classList.contains('hidden')) closeGuideModal();
     });
 
-    // 플로팅 메뉴 외부 클릭 시 닫기
     document.addEventListener('click', function(event) {
         const fabMenu = document.getElementById('fab-options-menu');
         const fabButton = document.querySelector('.fab-button');
-        // 메뉴가 열려있고, 클릭된 곳이 버튼이나 메뉴 내부가 아닐 때
         if (fabMenu.classList.contains('open') && !fabButton.contains(event.target) && !fabMenu.contains(event.target)) {
             fabMenu.classList.remove('open');
         }
