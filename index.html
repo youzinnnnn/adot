@@ -19,24 +19,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/style.css">
-
-    <style>
-        /* 기본 상태: 메뉴 숨김 */
-        #fab-options-menu {
-            transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
-            opacity: 0;
-            transform: translateY(1rem);
-            visibility: hidden; /* 완전히 숨겨서 상호작용 방지 */
-            pointer-events: none;
-        }
-        /* 'open' 클래스가 추가되었을 때: 메뉴 보임 */
-        #fab-options-menu.open {
-            opacity: 1;
-            transform: translateY(0);
-            visibility: visible;
-            pointer-events: auto;
-        }
-    </style>
 </head>
 <body class="w-full min-h-screen bg-gray-50 overflow-x-hidden">
 
@@ -83,7 +65,7 @@
                 <button onclick="openGuideModal()" class="btn btn-secondary text-sm">? 사용법</button>
             </header>
             
-            <div class="workspace-grid flex-grow flex flex-col lg:flex-row gap-6 p-4 sm:p-6 md:p-8 overflow-y-auto lg:overflow-y-hidden">
+            <div class="workspace-grid flex-grow flex flex-col lg:flex-row gap-6 p-4 sm:p-6 md:p-8 lg:p-8 pb-40 lg:pb-8 overflow-y-auto lg:overflow-y-hidden">
                 <div class="workspace-card lg:w-1/2">
                     <div class="card-header flex justify-between items-center flex-wrap gap-2">
                         <div class="flex items-center gap-2">
@@ -105,68 +87,51 @@
                 <div class="workspace-card lg:w-1/2">
                     <div class="card-header flex justify-between items-center">
                         <h2 class="text-lg font-semibold">결과 확인</h2>
-                        <button onclick="copyResult()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3.25H5.25a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9.5A.75.75 0 0016.5 9V5.25a2 2 0 00-2-2H13.25a.75.75 0 000 1.5H15a.5.5 0 01.5.5v10a.5.5 0 01-.5-.5H5.25a.5.5 0 01-.5-.5V5.25a.5.5 0 01.5-.5H7a.75.75 0 000-1.5z" /><path d="M9.25 2.25a.75.75 0 01.75-.75h4a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0V3.56l-3.22 3.22a.75.75 0 11-1.06-1.06l3.22-3.22H10a.75.75 0 01-.75-.75z" /></svg>결과 복사</button>
+                        <button onclick="copyResult()" class="btn btn-secondary text-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3.25H5.25a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9.5A.75.75 0 0016.5 9V5.25a2 2 0 00-2-2H13.25a.75.75 0 000 1.5H15a.5.5 0 01.5.5v10a.5.5 0 01-.5-.5H5.25a.5.5 0 01-.5-.5V5.25a.5.5 0 01.5-.5H7a.75.75 0 000-1.5z" /><path d="M9.25 2.25a.75.75 0 01.75-.75h4a.75.75 0 01.75.75v4a.75.75 0 01-1.5 0V3.56l-3.22 3.22a.75.75 0 11-1.06-1.06l3.22-3.22H10a.75.75 0 01-.75-.75z" /></svg>문제 복사</button>
                     </div>
                     <div id="outputArea" class="flex-1 overflow-y-auto p-5 bg-slate-50 text-sm leading-relaxed whitespace-pre-wrap custom-scroll">여기에 결과가 표시됩니다...</div>
-                    
-                    <div class="card-footer hidden lg:flex justify-between items-center gap-4 flex-wrap">
-                        <div class="flex items-center gap-x-4 gap-y-2 flex-wrap">
-                            <div class="flex items-center">
-                                <span class="text-sm font-medium text-gray-600 mr-2">번호:</span>
-                                <div id="formatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                                    <button data-value="(1)" class="format-btn active"> (1) </button>
-                                    <button data-value="1." class="format-btn"> 1. </button>
-                                    <button data-value="①" class="format-btn"> ① </button>
-                                    <button data-value="(A)" class="format-btn"> (A) </button>
-                                </div>
-                            </div>
-                            <div id="titleFormatWrapperDesktop" class="items-center hidden">
-                                <span class="text-sm font-medium text-gray-600 mr-2">제목:</span>
-                                <div id="titleFormatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                                    <button data-value=" " class="format-btn active"> 기본 </button>
-                                    <button data-value="[ ]" class="format-btn"> [ ] </button>
-                                    <button data-value="( )" class="format-btn"> ( ) </button>
-                                    <button data-value="< >" class="format-btn"> &lt; &gt; </button>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="generateResult()" class="btn btn-primary text-base"><span class="icon">✨</span>생성하기</button>
-                    </div>
                 </div>
             </div>
 
-            <div class="lg:hidden fixed z-30 flex flex-col items-center fab-container">
-                <div id="fab-options-menu" class="flex flex-col items-center w-full mb-3">
-                    <div class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full">
-                        <span class="text-sm font-medium text-gray-600 mb-2 block text-center">번호 스타일</span>
-                        <div id="formatSelectMobile" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                            <button data-value="(1)" class="format-btn active"> (1) </button>
-                            <button data-value="1." class="format-btn"> 1. </button>
-                            <button data-value="①" class="format-btn"> ① </button>
-                            <button data-value="(A)" class="format-btn"> (A) </button>
+            <div class="fixed z-30 flex flex-col-reverse items-end gap-4" style="right: 1.5rem; bottom: 1.5rem;">
+                <div class="relative flex flex-col items-center">
+                     <div id="fab-options-menu" class="absolute bottom-full right-0 w-60 sm:w-72 mb-3">
+                        <div class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full">
+                            <span class="text-sm font-medium text-gray-600 mb-2 block text-center">번호 스타일</span>
+                            <div id="formatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                                <button data-value="(1)" class="format-btn active">(1)</button>
+                                <button data-value="1." class="format-btn">1.</button>
+                                <button data-value="①" class="format-btn">①</button>
+                                <button data-value="(A)" class="format-btn">(A)</button>
+                            </div>
                         </div>
-                    </div>
-                    <div id="titleFormatWrapperMobile" class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full hidden">
-                        <span class="text-sm font-medium text-gray-600 mb-2 block text-center">제목 스타일</span>
-                        <div id="titleFormatSelectMobile" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                            <button data-value=" " class="format-btn active"> 기본 </button>
-                            <button data-value="[ ]" class="format-btn"> [ ] </button>
-                            <button data-value="( )" class="format-btn"> ( ) </button>
-                            <button data-value="< >" class="format-btn"> &lt; &gt; </button>
+                        <div id="titleFormatWrapper" class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full hidden">
+                            <span class="text-sm font-medium text-gray-600 mb-2 block text-center">제목 스타일</span>
+                            <div id="titleFormatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                                <button data-value=" " class="format-btn active">기본</button>
+                                <button data-value="[ ]" class="format-btn">[ ]</button>
+                                <button data-value="( )" class="format-btn">( )</button>
+                                <button data-value="< >" class="format-btn">&lt; &gt;</button>
+                            </div>
                         </div>
+                        <button onclick="generateResult()" class="btn btn-primary w-full text-base py-3 shadow-lg">
+                            ✨ 생성하기
+                        </button>
                     </div>
-                    <button onclick="generateResult()" class="btn btn-primary w-full text-base py-3 shadow-lg">
-                        ✨ 생성하기
+
+                    <button onclick="toggleFabMenu()" class="btn btn-primary rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
+                        <span id="fab-icon" class="text-2xl">✨</span>
+                        <span id="fab-text" class="text-xs font-bold">생성</span>
                     </button>
                 </div>
-                <button onclick="toggleFabMenu()" class="btn btn-primary rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
-                    <span class="text-2xl">✨</span>
-                    <span class="text-xs font-bold">생성</span>
+
+                 <button id="answer-fab" onclick="showAnswerModal()" class="hidden btn bg-green-500 hover:bg-green-600 text-white rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
+                    <span class="text-2xl">📄</span>
+                    <span class="text-xs font-bold">답지</span>
                 </button>
             </div>
         </div>
     </main>
-
 
     <div id="copyMessage" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">✓ 클립보드에 복사되었습니다!</div>
     
@@ -214,9 +179,9 @@
                                 </div>
                             </div>
                         </div>
-            
+                    
                         <div id="guide-sequence" class="tab-content hidden">
-                             <h4 class="text-xl font-bold text-indigo-600 mb-4">순서 배열 예시</h4>
+                                <h4 class="text-xl font-bold text-indigo-600 mb-4">순서 배열 예시</h4>
                             <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 순서를 무작위로 섞어 순서배열 문제를 만듭니다. '제목 포함하기'를 체크하면 문제 번호 등을 함께 넣을 수 있습니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
@@ -241,17 +206,17 @@
                                 </div>
                             </div>
                         </div>
-            
+                    
                         <div id="guide-wordOrder" class="tab-content hidden">
-                             <h4 class="text-xl font-bold text-indigo-600 mb-4">어순 배열 예시</h4>
+                                <h4 class="text-xl font-bold text-indigo-600 mb-4">어순 배열 예시</h4>
                             <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 각 문장의 단어 순서를 무작위로 섞어 어순배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
                                     <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                         <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                         <pre class="bg-white p-2 rounded text-sm">아기 곰은 눈덩이를 만들어요. 눈 오는 행복한 하루예요. 엄마 곰이 웃어요.</pre>
-                                         <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
+                                            <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
+                                            <pre class="bg-white p-2 rounded text-sm">아기 곰은 눈덩이를 만들어요. 눈 오는 행복한 하루예요. 엄마 곰이 웃어요.</pre>
+                                            <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
                                         <pre class="bg-white p-2 rounded text-sm">Baby Bear makes a snowball. It's a happy snowy day. Mama Bear laughs.</pre>
                                     </div>
                                 </div>
@@ -270,16 +235,16 @@
                                 </div>
                             </div>
                         </div>
-            
+                    
                         <div id="guide-chunkOrder" class="tab-content hidden">
-                             <h4 class="text-xl font-bold text-indigo-600 mb-4">구문 배열 예시 (AI)</h4>
+                                <h4 class="text-xl font-bold text-indigo-600 mb-4">구문 배열 예시 (AI)</h4>
                             <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 의미 단위(구문)로 나누고 순서를 섞어 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
                             <div class="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
                                     <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
                                         <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                         <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다. 나무들이 부드럽게 바람에 흔들린다.</pre>
+                                            <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다. 나무들이 부드럽게 바람에 흔들린다.</pre>
                                         <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
                                         <pre class="bg-white p-2 rounded text-sm">I like to read books in the park. The trees sway gently in the breeze.</pre>
                                     </div>
@@ -298,6 +263,22 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="answer-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <button onclick="closeAnswerModal()" class="modal-close-button">&times;</button>
+            <div class="p-6">
+                <h3 class="text-2xl font-bold font-HakgyoansimAllim text-gray-800 mb-4 text-center">답지 📄</h3>
+                <div id="answer-content" class="h-64 overflow-y-auto p-4 bg-green-50 text-sm leading-relaxed whitespace-pre-wrap custom-scroll rounded-lg border border-green-200 mb-4">
+                    정답 내용이 여기에 표시됩니다.
+                </div>
+                <div class="flex justify-end gap-3">
+                     <button onclick="copyAnswer()" class="btn btn-primary bg-green-600 hover:bg-green-700">답지 복사</button>
+                     <button onclick="closeAnswerModal()" class="btn btn-secondary">닫기</button>
                 </div>
             </div>
         </div>

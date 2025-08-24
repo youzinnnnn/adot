@@ -2,6 +2,9 @@ let currentFunction = '';
 const homeScreen = document.getElementById('home');
 const workspaceScreen = document.getElementById('workspace');
 
+// [Req 2] 답지 저장을 위한 전역 변수
+let answerSheet = '';
+
 const functionSettings = {
     split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
     sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
@@ -14,10 +17,7 @@ function updateTitleStyleVisibility() {
     const isChecked = document.getElementById('includeExplanations').checked;
     const shouldShow = settings && settings.hasTitleStyle && isChecked;
 
-    document.getElementById('titleFormatWrapperDesktop').classList.toggle('hidden', !shouldShow);
-    document.getElementById('titleFormatWrapperDesktop').classList.toggle('flex', shouldShow);
-    
-    document.getElementById('titleFormatWrapperMobile').classList.toggle('hidden', !shouldShow);
+    document.getElementById('titleFormatWrapper').classList.toggle('hidden', !shouldShow);
 }
 
 function switchScreen(show, hide) {
@@ -46,6 +46,7 @@ function showWorkspace(func) {
     document.getElementById('passagesContainer').innerHTML = '';
     addPassage();
     document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
+    document.getElementById('answer-fab').classList.add('hidden'); // 답지 버튼 숨기기
     updateTitleStyleVisibility();
 }
 
@@ -109,17 +110,12 @@ function getPassages() {
 }
 
 function getFormatOptions() {
-    const isDesktop = window.innerWidth >= 1024;
-    
-    const formatSelectId = isDesktop ? 'formatSelect' : 'formatSelectMobile';
-    const titleFormatSelectId = isDesktop ? 'titleFormatSelect' : 'titleFormatSelectMobile';
-
-    const formatValue = document.querySelector(`#${formatSelectId} .format-btn.active`).dataset.value;
+    const formatValue = document.querySelector('#formatSelect .format-btn.active').dataset.value;
     
     let titleFormatValue = ' '; // 기본값
-    const titleFormatWrapper = isDesktop ? document.getElementById('titleFormatWrapperDesktop') : document.getElementById('titleFormatWrapperMobile');
+    const titleFormatWrapper = document.getElementById('titleFormatWrapper');
     if (!titleFormatWrapper.classList.contains('hidden')) {
-        const activeTitleBtn = document.querySelector(`#${titleFormatSelectId} .format-btn.active`);
+        const activeTitleBtn = document.querySelector('#titleFormatSelect .format-btn.active');
         if(activeTitleBtn) titleFormatValue = activeTitleBtn.dataset.value;
     }
     
@@ -130,7 +126,7 @@ function getFormatOptions() {
 }
 
 function setupFormatButtons() {
-    const buttonGroups = document.querySelectorAll('#formatSelect, #titleFormatSelect, #formatSelectMobile, #titleFormatSelectMobile');
+    const buttonGroups = document.querySelectorAll('#formatSelect, #titleFormatSelect');
     
     buttonGroups.forEach(group => {
         group.addEventListener('click', (e) => {
@@ -144,6 +140,11 @@ function setupFormatButtons() {
 
 function generateResult() {
     if (!currentFunction) return;
+
+    // [Req 2] 답지 초기화
+    answerSheet = '';
+    document.getElementById('answer-fab').classList.add('hidden');
+
     const { format, titleFormat } = getFormatOptions();
     switch(currentFunction) {
         case 'split': splitSentences(format, titleFormat); break;
@@ -151,15 +152,45 @@ function generateResult() {
         case 'wordOrder': generateWordOrderQuestion(format); break;
         case 'chunkOrder': generateChunkOrderQuestion(format); break;
     }
+
+    // [Req 2] 답지가 생성되었으면 버튼 표시
+    if (answerSheet.trim()) {
+         document.getElementById('answer-fab').classList.remove('hidden');
+    }
+
+    // [Req 1 & 4] 메뉴가 열려있으면 닫고 버튼 텍스트 복원
     const fabMenu = document.getElementById('fab-options-menu');
     if (fabMenu.classList.contains('open')) {
         fabMenu.classList.remove('open');
+        document.getElementById('fab-icon').innerText = '✨';
+        document.getElementById('fab-text').innerText = '생성';
     }
 }
 
 function toggleFabMenu() {
     const fabMenu = document.getElementById('fab-options-menu');
+    const fabIcon = document.getElementById('fab-icon');
+    const fabText = document.getElementById('fab-text');
+    const answerFab = document.getElementById('answer-fab'); // 답지 버튼 Element 가져오기
+
     fabMenu.classList.toggle('open');
+    
+    if (fabMenu.classList.contains('open')) {
+        // 메뉴가 열릴 때
+        fabIcon.innerText = '❌';
+        fabText.innerText = '닫기';
+        // 답지 버튼을 숨김
+        answerFab.classList.add('hidden');
+    } else {
+        // 메뉴가 닫힐 때
+        fabIcon.innerText = '✨';
+        fabText.innerText = '생성';
+        // 답지가 생성된 상태라면 다시 표시
+        if (answerSheet.trim()) {
+            answerFab.classList.remove('hidden');
+        }
+    }
+
 }
 
 function extractSentences(text) {
@@ -193,7 +224,7 @@ function extractSentences(text) {
             if (sentence) sentences.push(sentence);
         }
     }
-    return sentences;
+    return sentences.filter(s => s.length > 0);
 }
 
 function getNumberingPrefix(format, num) {
@@ -228,11 +259,14 @@ function splitSentences(format, titleFormat) {
         return formattedTitle + numbered;
     }).join('\n\n🟪\n\n');
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+    answerSheet = ''; // 문장 넘버링은 답지 없음
 }
 
 function generateSequenceQuestion(numberingFormat, titleFormat) {
     const passages = getPassages();
-    const result = passages.map(({ title, body }) => {
+    const answerParts = [];
+
+    const result = passages.map(({ title, body }, p_idx) => {
         const formattedTitle = getFormattedTitle(title, titleFormat);
         const sentences = extractSentences(body).map(s => s.trim());
         if (sentences.length < 2) return `${formattedTitle}두 문장 이상 입력해야 합니다.`;
@@ -242,18 +276,24 @@ function generateSequenceQuestion(numberingFormat, titleFormat) {
         const answerOrder = sentences.map(original => 
             getNumberingPrefix(numberingFormat, shuffled.indexOf(original) + 1).trim().replace(/[().\s]/g, '')
         );
+        
+        const passageAnswer = `[${title || `지문 ${p_idx + 1}`}] ${answerOrder.join(" → ")}`;
+        answerParts.push(passageAnswer);
 
-        return `${formattedTitle}${question}\n\n정답: ${answerOrder.join(" → ")}`;
+        return `${formattedTitle}${question}\n`;
     }).join('\n\n🟪\n\n');
+    
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+    answerSheet = answerParts.join('\n\n');
 }
 
 function generateWordOrderQuestion(numberingFormat) {
     const passages = getPassages();
     const includeExplanations = document.getElementById('includeExplanations').checked;
     let questionCount = 1;
+    const answerParts = [];
 
-    const result = passages.map(({ title, body }) => {
+    const result = passages.map(({ title, body }, p_idx) => {
         const sentences = extractSentences(body);
         let explanations = [];
         if (includeExplanations && title) {
@@ -264,7 +304,8 @@ function generateWordOrderQuestion(numberingFormat) {
             return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
         }
 
-        return sentences.map((sentence, idx) => {
+        const passageAnswers = [];
+        const passageResult = sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
             let cleaned = sentence.trim().replace(/[.,?!]$/, '').replace(/,/g, '').trim();
             let words = cleaned.split(/\s+/).filter(Boolean);
@@ -272,11 +313,22 @@ function generateWordOrderQuestion(numberingFormat) {
                 words[0] = words[0].charAt(0).toLowerCase() + words[0].slice(1);
             }
             const shuffled = [...words].sort(() => Math.random() - 0.5);
-            const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+            const numbering = getNumberingPrefix(numberingFormat, questionCount);
+            
+            passageAnswers.push(`${getNumberingPrefix(numberingFormat, questionCount).trim()} ${sentence.trim()}`);
+            questionCount++;
+
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
+        if(passageAnswers.length > 0) {
+            answerParts.push(`[${`지문 ${p_idx+1}`}]\n${passageAnswers.join('\n')}`);
+        }
+        return passageResult;
+
     }).join('\n\n🟪\n\n');
+
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+    answerSheet = answerParts.join('\n\n');
 }
 
 function generateChunkOrderQuestion(numberingFormat) {
@@ -288,14 +340,13 @@ function generateChunkOrderQuestion(numberingFormat) {
     const passages = getPassages();
     const includeExplanations = document.getElementById('includeExplanations').checked;
     let questionCount = 1;
+    const answerParts = [];
 
-    const mergeForwardWords = new Set([
-        'and', 'of', 'at', 'in', 'on', 'for', 'to', 'with', 'by', 'from', 'about', 'as', 'into', 'like', 'through', 'after', 'over', 'between', 'out', 'against', 'during', 'without', 'before', 'under', 'around', 'among'
-    ]);
+    const mergeForwardWords = new Set(['and', 'of', 'at', 'in', 'on', 'for', 'to', 'with', 'by', 'from', 'about', 'as', 'into', 'like', 'through', 'after', 'over', 'between', 'out', 'against', 'during', 'without', 'before', 'under', 'around', 'among']);
     const phrasalPrepositionsTwo = new Set(['due to', 'according to', 'because of', 'instead of', 'next to', 'such as', 'as for', 'in to']);
     const phrasalPrepositionsThree = new Set(['in front of', 'in spite of', 'on behalf of', 'in addition to', 'as well as']);
 
-    const result = passages.map(({ title, body }) => {
+    const result = passages.map(({ title, body }, p_idx) => {
         const sentences = extractSentences(body);
         let explanations = [];
         if (includeExplanations && title) {
@@ -306,7 +357,8 @@ function generateChunkOrderQuestion(numberingFormat) {
             return `❗ 지문 오류: 해설(${explanations.length}개)과 영어 문장(${sentences.length}개)의 개수가 일치하지 않습니다.`;
         }
 
-        return sentences.map((sentence, idx) => {
+        const passageAnswers = [];
+        const passageResult = sentences.map((sentence, idx) => {
             const explanation = (includeExplanations && explanations[idx]) ? `${explanations[idx].trim()}\n` : '';
             
             const originalSentence = sentence.trim().replace(/[.?!]$/, '').replace(/,/g, ', ').replace(/\s+/g, ' ').trim();
@@ -340,35 +392,43 @@ function generateChunkOrderQuestion(numberingFormat) {
                     const phrase = `${chunks[i]} ${chunks[i+1]} ${chunks[i+2]}`.toLowerCase().replace(/,/g, '');
                     if (phrasalPrepositionsThree.has(phrase)) {
                         finalChunks.push(`${chunks[i]} ${chunks[i+1]} ${chunks[i+2]}`);
-                        i += 3;
-                        continue;
+                        i += 3; continue;
                     }
                 }
                 if (i + 1 < chunks.length) {
                     const phrase = `${chunks[i]} ${chunks[i+1]}`.toLowerCase().replace(/,/g, '');
                     if (phrasalPrepositionsTwo.has(phrase)) {
                         finalChunks.push(`${chunks[i]} ${chunks[i+1]}`);
-                        i += 2;
-                        continue;
+                        i += 2; continue;
                     }
                 }
                 const currentChunkLower = chunks[i].toLowerCase().replace(/,/g, '');
                 if (mergeForwardWords.has(currentChunkLower) && i + 1 < chunks.length) {
                     finalChunks.push(`${chunks[i]} ${chunks[i+1]}`);
-                    i += 2;
-                    continue;
+                    i += 2; continue;
                 }
                 finalChunks.push(chunks[i]);
                 i += 1;
             }
 
             const shuffled = [...finalChunks].sort(() => Math.random() - 0.5);
-            const numbering = getNumberingPrefix(numberingFormat, questionCount++);
+            const numbering = getNumberingPrefix(numberingFormat, questionCount);
+
+            passageAnswers.push(`${getNumberingPrefix(numberingFormat, questionCount).trim()} ${sentence.trim()}`);
+            questionCount++;
+
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
         }).join('\n\n');
+
+        if(passageAnswers.length > 0) {
+            answerParts.push(`[${`지문 ${p_idx+1}`}]\n${passageAnswers.join('\n')}`);
+        }
+        return passageResult;
+
     }).join('\n\n🟪\n\n');
     
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
+    answerSheet = answerParts.join('\n\n');
 }
 
 
@@ -377,6 +437,7 @@ function copyResult() {
     if (output && output !== '여기에 결과가 표시됩니다...') {
         navigator.clipboard.writeText(output).then(() => {
             const message = document.getElementById('copyMessage');
+            message.innerText = '✓ 클립보드에 복사되었습니다!';
             message.classList.remove('opacity-0', 'translate-y-4');
             message.classList.add('opacity-100', 'translate-y-0');
             setTimeout(() => {
@@ -400,6 +461,31 @@ const guideModal = document.getElementById('guide-modal');
 function openGuideModal() { guideModal.classList.remove('hidden'); }
 function closeGuideModal() { guideModal.classList.add('hidden'); }
 
+// [Req 2] 답지 모달 관련 함수
+const answerModal = document.getElementById('answer-modal');
+function showAnswerModal() {
+    if (answerSheet.trim()) {
+        document.getElementById('answer-content').innerText = answerSheet;
+        answerModal.classList.remove('hidden');
+    }
+}
+function closeAnswerModal() {
+    answerModal.classList.add('hidden');
+}
+function copyAnswer() {
+     navigator.clipboard.writeText(answerSheet).then(() => {
+        const message = document.getElementById('copyMessage');
+        message.innerText = '✓ 답지가 복사되었습니다!';
+        message.classList.remove('opacity-0', 'translate-y-4');
+        message.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+            message.classList.remove('opacity-100', 'translate-y-0');
+            message.classList.add('opacity-0', 'translate-y-4');
+        }, 2000);
+        closeAnswerModal();
+     });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     workspaceScreen.classList.add('hidden');
     document.getElementById('includeExplanations').addEventListener('change', (e) => {
@@ -418,15 +504,32 @@ document.addEventListener('DOMContentLoaded', () => {
     guideModal.addEventListener('click', (event) => {
         if (event.target === guideModal) closeGuideModal();
     });
+    answerModal.addEventListener('click', (event) => {
+        if (event.target === answerModal) closeAnswerModal();
+    });
+
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && !guideModal.classList.contains('hidden')) closeGuideModal();
+        if (event.key === 'Escape') {
+            if (!guideModal.classList.contains('hidden')) closeGuideModal();
+            if (!answerModal.classList.contains('hidden')) closeAnswerModal();
+        }
     });
 
     document.addEventListener('click', function(event) {
         const fabMenu = document.getElementById('fab-options-menu');
         const fabButton = document.querySelector('.fab-button');
-        if (fabMenu.classList.contains('open') && !fabButton.contains(event.target) && !fabMenu.contains(event.target)) {
+        const fabContainer = fabButton.parentElement;
+        const answerFab = document.getElementById('answer-fab'); // 답지 버튼 Element 가져오기
+
+        if (fabMenu.classList.contains('open') && !fabContainer.contains(event.target) && !fabMenu.contains(event.target)) {
             fabMenu.classList.remove('open');
+            document.getElementById('fab-icon').innerText = '✨'; // 아이콘 복원
+            document.getElementById('fab-text').innerText = '생성'; // 텍스트 복원
+            
+            // 메뉴가 닫힐 때 답지가 생성된 상태라면 다시 표시
+            if (answerSheet.trim()) {
+                answerFab.classList.remove('hidden');
+            }
         }
     });
 });
