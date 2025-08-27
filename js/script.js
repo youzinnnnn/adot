@@ -319,7 +319,7 @@ function generateWordOrderQuestion(numberingFormat) {
             questionCount++;
 
             return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
-        }).join('\n\n');
+        }).join('\n');
         if(passageAnswers.length > 0) {
             answerParts.push(`[${`지문 ${p_idx+1}`}]\n${passageAnswers.join('\n')}`);
         }
