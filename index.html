@@ -95,29 +95,29 @@
 
             <div class="fixed z-30 flex flex-col-reverse items-end gap-4" style="right: 1.5rem; bottom: 1.5rem;">
                 <div class="relative flex flex-col items-center">
-                     <div id="fab-options-menu" class="absolute bottom-full right-0 w-60 sm:w-72 mb-3">
-                        <div class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full">
-                            <span class="text-sm font-medium text-gray-600 mb-2 block text-center">번호 스타일</span>
-                            <div id="formatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                                <button data-value="(1)" class="format-btn active">(1)</button>
-                                <button data-value="1." class="format-btn">1.</button>
-                                <button data-value="①" class="format-btn">①</button>
-                                <button data-value="(A)" class="format-btn">(A)</button>
+                        <div id="fab-options-menu" class="absolute bottom-full right-0 w-60 sm:w-72 mb-3">
+                            <div class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full">
+                                <span class="text-sm font-medium text-gray-600 mb-2 block text-center">번호 스타일</span>
+                                <div id="formatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                                    <button data-value="(1)" class="format-btn active">(1)</button>
+                                    <button data-value="1." class="format-btn">1.</button>
+                                    <button data-value="①" class="format-btn">①</button>
+                                    <button data-value="(A)" class="format-btn">(A)</button>
+                                </div>
                             </div>
-                        </div>
-                        <div id="titleFormatWrapper" class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full hidden">
-                            <span class="text-sm font-medium text-gray-600 mb-2 block text-center">제목 스타일</span>
-                            <div id="titleFormatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                                <button data-value=" " class="format-btn active">기본</button>
-                                <button data-value="[ ]" class="format-btn">[ ]</button>
-                                <button data-value="( )" class="format-btn">( )</button>
-                                <button data-value="< >" class="format-btn">&lt; &gt;</button>
+                            <div id="titleFormatWrapper" class="p-3 bg-white rounded-lg shadow-lg mb-3 w-full hidden">
+                                <span class="text-sm font-medium text-gray-600 mb-2 block text-center">제목 스타일</span>
+                                <div id="titleFormatSelect" class="flex items-center bg-gray-100 rounded-lg p-0.5">
+                                    <button data-value=" " class="format-btn active">기본</button>
+                                    <button data-value="[ ]" class="format-btn">[ ]</button>
+                                    <button data-value="( )" class="format-btn">( )</button>
+                                    <button data-value="< >" class="format-btn">&lt; &gt;</button>
+                                </div>
                             </div>
+                            <button onclick="generateResult()" class="btn btn-primary w-full text-base py-3 shadow-lg">
+                                ✨ 생성하기
+                            </button>
                         </div>
-                        <button onclick="generateResult()" class="btn btn-primary w-full text-base py-3 shadow-lg">
-                            ✨ 생성하기
-                        </button>
-                    </div>
 
                     <button onclick="toggleFabMenu()" class="btn btn-primary rounded-full flex-col text-base shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 fab-button">
                         <span id="fab-icon" class="text-2xl">✨</span>
@@ -134,155 +134,6 @@
     </main>
 
     <div id="copyMessage" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">✓ 클립보드에 복사되었습니다!</div>
-    
-    <div id="guide-modal" class="modal-overlay hidden">
-        <div class="modal-content custom-scroll">
-            <button onclick="closeGuideModal()" class="modal-close-button">&times;</button>
-            <div id="usage-guide" class="w-full">
-                <div class="text-center pt-8 mb-6">
-                    <h3 class="text-3xl font-bold font-HakgyoansimAllim text-gray-800">사용 가이드 📖</h3>
-                    <p class="mt-2 text-gray-600">각 기능의 사용 예시를 확인해보세요.</p>
-                </div>
-                
-                <div class="bg-white rounded-xl overflow-hidden px-4 sm:px-6 pb-6">
-                    <div class="flex border-b border-gray-200 bg-gray-50/50">
-                        <button onclick="switchTab(event, 'guide-split')" class="tab-button active">문장 넘버링</button>
-                        <button onclick="switchTab(event, 'guide-sequence')" class="tab-button">순서 배열</button>
-                        <button onclick="switchTab(event, 'guide-wordOrder')" class="tab-button">어순 배열</button>
-                        <button onclick="switchTab(event, 'guide-chunkOrder')" class="tab-button">구문 배열</button>
-                    </div>
-                    
-                    <div class="p-6 md:p-8">
-                        <div id="guide-split" class="tab-content active">
-                            <h4 class="text-xl font-bold text-indigo-600 mb-4">문장 넘버링 예시</h4>
-                            <p class="mb-6 text-gray-700">지문을 문장 단위로 자동 분리하고, 순서대로 번호를 붙여줍니다. '제목 포함하기'를 체크하면 문제 번호 등을 함께 넣을 수 있습니다.</p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
-                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                        <p class="font-mono text-xs text-gray-500 mb-1">[제목 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">2과 5번</pre>
-                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">The robot wakes up. It looks at the sun. "Good morning!" it says.</pre>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>[2과 5번]
-
-(1) The robot wakes up.
-
-(2) It looks at the sun.
-
-(3) "Good morning!" it says.
-</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div id="guide-sequence" class="tab-content hidden">
-                                <h4 class="text-xl font-bold text-indigo-600 mb-4">순서 배열 예시</h4>
-                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 순서를 무작위로 섞어 순서배열 문제를 만듭니다. '제목 포함하기'를 체크하면 문제 번호 등을 함께 넣을 수 있습니다.</p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
-                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                        <p class="font-mono text-xs text-gray-500 mb-1">[제목 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">1강 3번</pre>
-                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">First, gather your ingredients. Second, mix them in a bowl. Finally, bake for 20 minutes.</pre>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>[1강 3번]
-① Finally, bake for 20 minutes.
-
-② First, gather your ingredients.
-
-③ Second, mix them in a bowl.
-
-정답: ② → ③ → ①</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div id="guide-wordOrder" class="tab-content hidden">
-                                <h4 class="text-xl font-bold text-indigo-600 mb-4">어순 배열 예시</h4>
-                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 각 문장의 단어 순서를 무작위로 섞어 어순배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
-                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                            <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                            <pre class="bg-white p-2 rounded text-sm">아기 곰은 눈덩이를 만들어요. 눈 오는 행복한 하루예요. 엄마 곰이 웃어요.</pre>
-                                            <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">Baby Bear makes a snowball. It's a happy snowy day. Mama Bear laughs.</pre>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 아기 곰은 눈덩이를 만들어요.
-[makes / bear / snowball / baby / a]
-→
-
-(2) 눈 오는 행복한 하루예요.
-[a / snowy / day / happy / it's]
-→
-.
-.
-</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div id="guide-chunkOrder" class="tab-content hidden">
-                                <h4 class="text-xl font-bold text-indigo-600 mb-4">구문 배열 예시 (AI)</h4>
-                            <p class="mb-6 text-gray-700">지문을 문장 단위로 나눈 뒤, 의미 단위(구문)로 나누고 순서를 섞어 배열 문제를 만듭니다. '해설 포함하기'를 체크하고 각 문장에 맞는 우리말 해석을 입력하면 문제에 함께 표시됩니다.</p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✍️ 입력 예시</h5>
-                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200">
-                                        <p class="font-mono text-xs text-gray-500 mb-1">[해설 입력란]</p>
-                                            <pre class="bg-white p-2 rounded text-sm">나는 공원에서 책 읽는 것을 즐긴다. 나무들이 부드럽게 바람에 흔들린다.</pre>
-                                        <p class="font-mono text-xs text-gray-500 mt-3 mb-1">[지문 입력란]</p>
-                                        <pre class="bg-white p-2 rounded text-sm">I like to read books in the park. The trees sway gently in the breeze.</pre>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 class="font-semibold mb-2 text-gray-800">✨ 생성 결과</h5>
-                                    <pre class="p-4 bg-indigo-50 text-indigo-900 rounded-lg border border-indigo-200 text-sm"><code>(1) 나는 공원에서 책 읽는 것을 즐긴다.
-[in / books / the park / like to read / I]
-→
-
-(2) 나무들이 부드럽게 바람에 흔들린다.
-[sway gently / in / the breeze / The trees]
-→
-</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="answer-modal" class="modal-overlay hidden">
-        <div class="modal-content" style="max-width: 600px;">
-            <button onclick="closeAnswerModal()" class="modal-close-button">&times;</button>
-            <div class="p-6">
-                <h3 class="text-2xl font-bold font-HakgyoansimAllim text-gray-800 mb-4 text-center">답지 📄</h3>
-                <div id="answer-content" class="h-64 overflow-y-auto p-4 bg-green-50 text-sm leading-relaxed whitespace-pre-wrap custom-scroll rounded-lg border border-green-200 mb-4">
-                    정답 내용이 여기에 표시됩니다.
-                </div>
-                <div class="flex justify-end gap-3">
-                     <button onclick="copyAnswer()" class="btn btn-primary bg-green-600 hover:bg-green-700">답지 복사</button>
-                     <button onclick="closeAnswerModal()" class="btn btn-secondary">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <script src="js/script.js"></script>
 </body>
