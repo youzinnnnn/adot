@@ -1,22 +1,19 @@
 let currentFunction = '';
 const homeScreen = document.getElementById('home');
 const workspaceScreen = document.getElementById('workspace');
-
-// [Req 2] 답지 저장을 위한 전역 변수
 let answerSheet = '';
 
 const functionSettings = {
     split: { title: '문장 넘버링', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
     sequence: { title: '순서 배열', titlePlaceholder: 'ex) 3과 5번', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: true },
-    wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false },
-    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요 (문장 단위로 자동 분류)', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false }
+    wordOrder: { title: '어순 배열', titlePlaceholder: '해설을 입력하세요', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false },
+    chunkOrder: { title: '구문 배열', titlePlaceholder: '해설을 입력하세요', bodyPlaceholder: '지문을 입력하세요.', canIncludeExplanations: true, hasTitleStyle: false }
 };
 
 function updateTitleStyleVisibility() {
     const settings = functionSettings[currentFunction];
     const isChecked = document.getElementById('includeExplanations').checked;
     const shouldShow = settings && settings.hasTitleStyle && isChecked;
-
     document.getElementById('titleFormatWrapper').classList.toggle('hidden', !shouldShow);
 }
 
@@ -38,7 +35,6 @@ function showWorkspace(func) {
         const checkbox = document.getElementById('includeExplanations');
         checkbox.checked = false;
         checkbox.dispatchEvent(new Event('change'));
-
         document.getElementById('includeExplanationLabel').innerText =
             (func === 'split' || func === 'sequence') ? '제목 포함하기' : '해설 포함하기';
     }
@@ -46,7 +42,7 @@ function showWorkspace(func) {
     document.getElementById('passagesContainer').innerHTML = '';
     addPassage();
     document.getElementById('outputArea').innerText = '여기에 결과가 표시됩니다...';
-    document.getElementById('answer-fab').classList.add('hidden'); // 답지 버튼 숨기기
+    document.getElementById('answer-fab').classList.add('hidden');
     updateTitleStyleVisibility();
 }
 
@@ -57,21 +53,49 @@ function goToHome() {
 
 function createPassageElement() {
     const settings = functionSettings[currentFunction] || {};
+    const passageId = 'passage-' + Date.now() + Math.random(); // 고유 ID 생성
     const passageGroup = document.createElement('div');
-    passageGroup.className = 'passage-group-card space-y-3 animate-fade-in';
+    passageGroup.id = passageId;
+    passageGroup.className = 'passage-group-card relative flex flex-col animate-fade-in';
     
-    const explanationIsVisible = settings.canIncludeExplanations && document.getElementById('includeExplanations').checked;
+    const isSideBySideLayout = (currentFunction === 'wordOrder' || currentFunction === 'chunkOrder');
+    const includeExplanations = document.getElementById('includeExplanations').checked;
 
-    const titleInputHTML = `
-        <textarea class="title-input w-full text-sm resize-y input-base ${settings.canIncludeExplanations && !explanationIsVisible ? 'hidden' : ''}" placeholder="${settings.titlePlaceholder}" rows="1"></textarea>
-    `;
-    const bodyInputHTML = `
-        <textarea class="body-input w-full text-sm resize-y input-base" placeholder="${settings.bodyPlaceholder}" rows="7"></textarea>
+    const deleteButtonHTML = `
+        <button onclick="removeSpecificPassage('${passageId}')" class="passage-delete-button" aria-label="해당 지문 삭제">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
     `;
 
-    passageGroup.innerHTML = (settings.canIncludeExplanations ? titleInputHTML : '') + bodyInputHTML;
+    let contentHTML = '';
+    if (isSideBySideLayout) {
+        contentHTML = `
+            <div class="passage-input-grid ${includeExplanations ? 'side-by-side' : ''}">
+                <div class="passage-input-wrapper">
+                    <label class="input-label">지문</label>
+                    <textarea class="body-input w-full text-sm input-base" placeholder="${settings.bodyPlaceholder}"></textarea>
+                </div>
+                <div class="passage-input-wrapper explanation-container ${includeExplanations ? '' : 'hidden'}">
+                    <label class="input-label">해설</label>
+                    <textarea class="title-input w-full text-sm input-base" placeholder="${settings.titlePlaceholder}"></textarea>
+                </div>
+            </div>
+        `;
+    } else {
+        contentHTML = `
+            <div class="space-y-3">
+                <textarea class="title-input w-full text-sm resize-y input-base ${includeExplanations ? '' : 'hidden'}" placeholder="${settings.titlePlaceholder}" rows="1"></textarea>
+                <textarea class="body-input w-full text-sm resize-y input-base" placeholder="${settings.bodyPlaceholder}" rows="7"></textarea>
+            </div>
+        `;
+    }
+
+    passageGroup.innerHTML = deleteButtonHTML + contentHTML;
     return passageGroup;
 }
+
 
 function addPassage() {
     const container = document.getElementById('passagesContainer');
@@ -81,6 +105,7 @@ function addPassage() {
     newPassage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+/** "-" 버튼: 마지막 지문을 삭제합니다. */
 function removePassage() {
     const container = document.getElementById('passagesContainer');
     if (container.children.length > 1) {
@@ -92,6 +117,20 @@ function removePassage() {
         }, 300);
     }
 }
+
+function removeSpecificPassage(passageId) {
+    const container = document.getElementById('passagesContainer');
+    const passageToRemove = document.getElementById(passageId);
+
+    if (container.children.length > 1 && passageToRemove) {
+        passageToRemove.style.animation = 'fadeOut 0.3s ease forwards';
+        setTimeout(() => {
+            passageToRemove.remove();
+            updatePassageCount();
+        }, 300);
+    }
+}
+
 
 function updatePassageCount() {
     document.getElementById('passageCount').innerText = document.querySelectorAll('.passage-group-card').length;
@@ -141,7 +180,6 @@ function setupFormatButtons() {
 function generateResult() {
     if (!currentFunction) return;
 
-    // [Req 2] 답지 초기화
     answerSheet = '';
     document.getElementById('answer-fab').classList.add('hidden');
 
@@ -153,12 +191,10 @@ function generateResult() {
         case 'chunkOrder': generateChunkOrderQuestion(format); break;
     }
 
-    // [Req 2] 답지가 생성되었으면 버튼 표시
     if (answerSheet.trim()) {
          document.getElementById('answer-fab').classList.remove('hidden');
     }
 
-    // [Req 1 & 4] 메뉴가 열려있으면 닫고 버튼 텍스트 복원
     const fabMenu = document.getElementById('fab-options-menu');
     if (fabMenu.classList.contains('open')) {
         fabMenu.classList.remove('open');
@@ -257,7 +293,7 @@ function splitSentences(format, titleFormat) {
         const sentences = extractSentences(body);
         const numbered = sentences.map((s, i) => `${getNumberingPrefix(format, i + 1)}${s.trim()}`).join('\n\n\n');
         return formattedTitle + numbered;
-    }).join('\n\n🟪\n\n');
+    }).join('\n\n\n');
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
     answerSheet = ''; // 문장 넘버링은 답지 없음
 }
@@ -281,7 +317,7 @@ function generateSequenceQuestion(numberingFormat, titleFormat) {
         answerParts.push(passageAnswer);
 
         return `${formattedTitle}${question}\n`;
-    }).join('\n\n🟪\n\n');
+    }).join('\n\n');
     
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
     answerSheet = answerParts.join('\n\n');
@@ -325,7 +361,7 @@ function generateWordOrderQuestion(numberingFormat) {
         }
         return passageResult;
 
-    }).join('\n\n🟪\n\n');
+    }).join('\n\n');
 
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
     answerSheet = answerParts.join('\n\n');
@@ -417,7 +453,7 @@ function generateChunkOrderQuestion(numberingFormat) {
             passageAnswers.push(`${getNumberingPrefix(numberingFormat, questionCount).trim()} ${sentence.trim()}`);
             questionCount++;
 
-            return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n\n`;
+            return `${numbering}${explanation}[${shuffled.join(' / ')}]\n\n→\n`;
         }).join('\n\n');
 
         if(passageAnswers.length > 0) {
@@ -425,12 +461,11 @@ function generateChunkOrderQuestion(numberingFormat) {
         }
         return passageResult;
 
-    }).join('\n\n🟪\n\n');
+    }).join('\n\n');
     
     document.getElementById('outputArea').innerText = result.trim() || '생성할 내용이 없습니다.';
     answerSheet = answerParts.join('\n\n');
 }
-
 
 function copyResult() {
     const output = document.getElementById('outputArea').innerText;
@@ -461,7 +496,6 @@ const guideModal = document.getElementById('guide-modal');
 function openGuideModal() { guideModal.classList.remove('hidden'); }
 function closeGuideModal() { guideModal.classList.add('hidden'); }
 
-// [Req 2] 답지 모달 관련 함수
 const answerModal = document.getElementById('answer-modal');
 function showAnswerModal() {
     if (answerSheet.trim()) {
@@ -488,12 +522,17 @@ function copyAnswer() {
 
 document.addEventListener('DOMContentLoaded', () => {
     workspaceScreen.classList.add('hidden');
+    
     document.getElementById('includeExplanations').addEventListener('change', (e) => {
         const isChecked = e.target.checked;
+        const isSideBySideLayout = (currentFunction === 'wordOrder' || currentFunction === 'chunkOrder');
+
         document.querySelectorAll('.passage-group-card').forEach(card => {
-            const titleInput = card.querySelector('.title-input');
-            if (titleInput) {
-                titleInput.classList.toggle('hidden', !isChecked);
+            if (isSideBySideLayout) {
+                card.querySelector('.passage-input-grid')?.classList.toggle('side-by-side', isChecked);
+                card.querySelector('.explanation-container')?.classList.toggle('hidden', !isChecked);
+            } else {
+                card.querySelector('.title-input')?.classList.toggle('hidden', !isChecked);
             }
         });
         updateTitleStyleVisibility();
@@ -519,14 +558,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const fabMenu = document.getElementById('fab-options-menu');
         const fabButton = document.querySelector('.fab-button');
         const fabContainer = fabButton.parentElement;
-        const answerFab = document.getElementById('answer-fab'); // 답지 버튼 Element 가져오기
+        const answerFab = document.getElementById('answer-fab');
 
         if (fabMenu.classList.contains('open') && !fabContainer.contains(event.target) && !fabMenu.contains(event.target)) {
             fabMenu.classList.remove('open');
-            document.getElementById('fab-icon').innerText = '✨'; // 아이콘 복원
-            document.getElementById('fab-text').innerText = '생성'; // 텍스트 복원
+            document.getElementById('fab-icon').innerText = '✨';
+            document.getElementById('fab-text').innerText = '생성';
             
-            // 메뉴가 닫힐 때 답지가 생성된 상태라면 다시 표시
             if (answerSheet.trim()) {
                 answerFab.classList.remove('hidden');
             }
