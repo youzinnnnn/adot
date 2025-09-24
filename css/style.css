@@ -153,3 +153,128 @@ font-weight: 700;
 font-style: normal;
 }
 .font-HakgyoansimAllim { font-family: 'HakgyoansimAllimjangTTF-B', sans-serif; }
+
+/* ... 기존 CSS 코드 ... */
+
+.font-HakgyoansimAllim { font-family: 'HakgyoansimAllimjangTTF-B', sans-serif; }
+
+/* ▼▼▼ [수정 요청] 삭제 애니메이션 추가 ▼▼▼ */
+@keyframes fadeOut {
+    from { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+    to { 
+        opacity: 0; 
+        transform: scale(0.95);
+    }
+}
+
+/* ▼▼▼ [요청 2] 좌우 배치 레이아웃 스타일 추가 ▼▼▼ */
+.passage-input-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* 기본값: 1열 */
+    gap: 0.75rem; /* 12px */
+    height: 100%;
+    flex-grow: 1;
+}
+
+/* 'side-by-side' 클래스가 있을 때 2열로 변경 */
+.passage-input-grid.side-by-side {
+    grid-template-columns: 1fr 1fr; /* 2열 */
+}
+
+.passage-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100px; /* 최소 높이 보장 */
+}
+
+/* textarea가 wrapper 내부 공간을 모두 차지하도록 설정 */
+.passage-input-wrapper textarea {
+    flex-grow: 1;
+    resize: none; /* 좌우 배치 시 리사이즈 핸들 비활성화 */
+}
+
+.passage-input-wrapper .input-label {
+    font-size: 0.8rem; /* 12px */
+    font-weight: 500;
+    color: #4b5563; /* text-gray-600 */
+    margin-bottom: 0.25rem; /* 4px */
+    padding-left: 0.25rem;
+}
+
+/* ... 기존 CSS 코드 ... */
+
+/* ▼▼▼ 아래 코드를 CSS 파일 맨 아래에 추가해주세요 ▼▼▼ */
+
+@keyframes fadeOut {
+    from { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+    to { 
+        opacity: 0; 
+        transform: scale(0.95);
+    }
+}
+
+/* 개별 지문 삭제 버튼 스타일 */
+.passage-delete-button {
+    position: absolute;
+    top: 0.5rem;  /* 8px */
+    right: 0.5rem; /* 8px */
+    z-index: 10;
+    width: 1.75rem; /* 28px */
+    height: 1.75rem; /* 28px */
+    border-radius: 9999px; /* rounded-full */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #9ca3af; /* text-gray-400 */
+    border: none;
+    cursor: pointer;
+}
+.passage-delete-button:hover {
+    background-color: #fee2e2; /* bg-red-100 */
+    color: #ef4444; /* text-red-500 */
+}
+.passage-delete-button svg {
+    width: 1rem; /* 16px */
+    height: 1rem; /* 16px */
+}
+
+/* 좌우 배치 레이아웃 스타일 */
+.passage-input-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* 기본값: 1열 */
+    gap: 0.75rem; /* 12px */
+    height: 100%;
+    flex-grow: 1;
+}
+
+/* 'side-by-side' 클래스가 있을 때 2열로 변경 */
+.passage-input-grid.side-by-side {
+    grid-template-columns: 1fr 1fr; /* 2열 */
+}
+
+.passage-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 150px; /* 최소 높이 보장 */
+}
+
+/* textarea가 wrapper 내부 공간을 모두 차지하도록 설정 */
+.passage-input-wrapper textarea {
+    flex-grow: 1;
+    resize: none; /* 좌우 배치 시 리사이즈 핸들 비활성화 */
+}
+
+.passage-input-wrapper .input-label {
+    font-size: 0.8rem; /* 12px */
+    font-weight: 500;
+    color: #4b5563; /* text-gray-600 */
+    margin-bottom: 0.25rem; /* 4px */
+    padding-left: 0.25rem;
+}
